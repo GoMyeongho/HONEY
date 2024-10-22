@@ -8,7 +8,8 @@ public class PostsVO {
     private String date;
     private String category;
 
-    public PostsVO() {}
+    public PostsVO() {
+    }
 
     public PostsVO(String category, String author, String content, String title, int postno) {
         this.category = category;
@@ -68,4 +69,5 @@ public class PostsVO {
 
     public String getDate() {
         return date;
+    }
 }
