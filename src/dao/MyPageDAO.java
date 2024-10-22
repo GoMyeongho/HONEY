@@ -31,6 +31,8 @@ public class MyPageDAO {
                 String pwLOCK = rs.getString("PW_LOCK"); // 제시어 문제
                 String pwKey = rs.getString("PW_KEY"); // 제시어 답
 
+                currUser = new UsersVO(userID, userPW, nName, phone, updateDATE, pwLOCK, pwKey);
+
 
             }
 
