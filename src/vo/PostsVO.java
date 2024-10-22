@@ -10,7 +10,7 @@ public class PostsVO {
 
     public PostsVO() {
     }
-
+    // 글 작성용 생성자
     public PostsVO(String category, String author, String content, String title, int postno) {
         this.category = category;
         this.author = author;
@@ -18,14 +18,15 @@ public class PostsVO {
         this.title = title;
         this.postno = postno;
     }
-
-    public PostsVO(String category, String author, String title, int postno) {
+    // 페이지용 생성자
+    public PostsVO(int postno, String title, String author, String category, String date) {
         this.category = category;
         this.author = author;
         this.title = title;
+        this.date = date;
         this.postno = postno;
     }
-
+    // 글 보여주기용 생성자
     public PostsVO(int postno, String title, String content, String author, String date, String category) {
         this.postno = postno;
         this.title = title;
