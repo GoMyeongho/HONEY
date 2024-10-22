@@ -80,5 +80,8 @@ public class PostsVO {
     public void setCategory(String category) {
         this.category = category;
     }
+    public String toString() {
+        return "=".repeat(60) + "\n" + title + " | " + author + " | " +
+    }
 
 }
