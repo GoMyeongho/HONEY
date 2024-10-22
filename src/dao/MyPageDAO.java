@@ -13,7 +13,7 @@ public class MyPageDAO {
     ResultSet rs = null;
     Scanner sc = new Scanner(System.in);
 
-    UsersDAO mDao = new UsersDAO();
+    UsersDAO uDao = new UsersDAO();
 
     public UsersVO currUserInfo(String userID) {
         UsersVO currUser = null;
