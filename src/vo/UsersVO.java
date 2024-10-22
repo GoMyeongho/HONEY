@@ -82,6 +82,4 @@ public class UsersVO {
     public void setPwKey(String pwKey) {
         this.pwKey = pwKey;
     }
-
-    testtesttesttest
 }
