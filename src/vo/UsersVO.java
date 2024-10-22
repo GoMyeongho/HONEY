@@ -11,6 +11,7 @@ public class UsersVO {
     private String pwLOCK;
     private String pwKey;
 
+    // 생성자 
     public UsersVO(String userID, String userPW, String nName, String phone, Date updateDATE, String pwLOCK, String pwKey) {
         this.userID = userID;
         this.userPW = userPW;
@@ -20,9 +21,11 @@ public class UsersVO {
         this.pwLOCK = pwLOCK;
         this.pwKey = pwKey;
     }
-
+    
+    // 빈 생성자
     public UsersVO() {}
 
+    // getter
     public String getUserID() {
         return userID;
     }
@@ -51,6 +54,7 @@ public class UsersVO {
         return pwKey;
     }
 
+    // setter
     public void setUserID(String userID) {
         this.userID = userID;
     }
