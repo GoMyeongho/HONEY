@@ -127,6 +127,7 @@ public class UsersDAO {
         String userID;
         String pwLOCK;
         String pwKey;
+        String userPW;
         while (true) {
             System.out.println("가입한 아이디를 입력 해 주세요");
             System.out.print("아이디: ");
@@ -151,5 +152,10 @@ public class UsersDAO {
                 System.out.println("키워드 입력 조건을 다시 확인 해 주세요");
             }
         }
+        System.out.print("비밀번호는 " + userPW + "입니다.");
+        // 끌어오기 필요
     }
 }
+
+
+// !!! 모두 중간 탈출 구간과 끝났을 때 다시 메인으로 돌아가도록 확인 필요
