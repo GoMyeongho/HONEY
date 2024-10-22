@@ -22,7 +22,7 @@ public class PostListDAO {
     }
 
     // 공통 페이지 조회 기능 구현
-    public List<PostsVO> viewPage(String sql) {
+    public List<PostsVO> selectPage(String sql) {
         List<PostsVO> list = new ArrayList<PostsVO>();
         try {
             conn = Common.getConnection();  // 오라클 DB 연결
