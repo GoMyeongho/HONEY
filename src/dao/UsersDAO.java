@@ -20,18 +20,16 @@ public class UsersDAO {
     }
 
     // !!!!!회원가입
-    public static List<UsersVO> joinMember() {
-        List<UsersVO> list = new ArrayList<>();
+    public void joinMember() {
+
         System.out.println("=====신규 회원 가입=====");
-    try {
     // 아이디 생성
     while (true) {
         System.out.println("아이디는 8자 이상 16자 이하의 영문 및 숫자이어야 합니다. (중복 불가능)");
         System.out.print("아이디: ");
         String userID = sc.next();
         if (userID.length() >= 8 && userID.length() <= 16) {
-            // 아이디가 중복 될 경우 다시 돌아가기?
-            // 중복된 아이디입니다. 다시 확인 해 주세요
+            // if 중복된 아이디 확인
             break;
         } else {
             System.out.println("아이디 생성 조건을 다시 확인 후 입력 해 주세요.");
@@ -44,7 +42,7 @@ public class UsersDAO {
         System.out.print("비밀번호: ");
         String userPW = sc.next();
         if (userPW.length() >= 8 && userPW.length() <= 16) {
-            // 비밀번호 특수문자 및 영문 대소문자 확인하기
+            // if 비밀번호 특수문자 및 영문 대소문자 확인 및 한글이 포함되어있는지 확인
             break;
         } else {
             System.out.println("비밀번호 생성 조건을 다시 확인 후 입력 해 주세요.");
@@ -99,16 +97,22 @@ public class UsersDAO {
         } else {
             System.out.print("키워드 생성 조건을 확인 후 다시 입력 해 주세요.");
         }
+    }
+    String query = "INSERT INTO USERS (userID, userPW, nName, phone, updateDATE, pwLOCK, pwKey) " +
+            "VALUES (userID, userPW, nName, phone, updateDATE, pwLOCK, pwKey)"; //?????
 
-        }
-            Common.close(rs);
-            Common.close(stmt);
-            Common.close(conn);
-        } catch (Exception e) {
-            System.out.println("-----");
-        }
-        // 회원 리스트에 추가 필요
-        return new UsersVO();   //
+    try {
+        conn = Common.getConnection();
+        stmt = conn.createStatement();
+        int ret = stmt.executeUpdate(query);
+        System.out.println("Return: " + ret);
+
+    } catch (SQLException e) {
+        System.out.println("회원가입에 실패하였습니다.");
+    }
+    Common.close(rs);
+    Common.close(stmt);
+    Common.close(conn);
     }
 
 
@@ -117,7 +121,7 @@ public class UsersDAO {
         Scanner sc = new Scanner(System.in);
         System.out.println("=====ID 찾기=====");
         String phone;
-        String userID;
+        String userID = "";
         while (true) {
             System.out.println("가입 시 사용했던 전화번호를 입력 해 주세요");
             System.out.println("전화번호는 010-0000-0000 형식으로 하이픈을 포함하여 입력 해 주세요");
@@ -127,28 +131,29 @@ public class UsersDAO {
                 // if 존재하는 전화번호인지 확인
                 // 존재하지 않는 전화번호 입니다.
                 System.out.print("아이디는 " + userID + "입니다.");
-                // 아이디 끌어오기 필요
+                // 아이디 끌어오기
                 //
                 break;
             } else {
                 System.out.print("전화번호 입력 조건을 확인 후 다시 입력 해 주세요.");
             }
         }
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
     }
 
 
     // !!!!!!비밀번호 찾기
     public void findPW() {
         Scanner sc = new Scanner(System.in);
-        String userID;
-        String pwLOCK;
-        String pwKey;
-        String userPW;
+        String pwLOCK = "";
+        String userPW = "";
         while (true) {
             System.out.println("가입한 아이디를 입력 해 주세요");
             System.out.print("아이디: ");
             System.out.println();
-            userID = sc.next();
+            String userID = sc.next();
             if (userID.length() >= 8 && userID.length() <= 16) {
                 // if 존재하는 아이디인지 확인
                 //
@@ -161,16 +166,19 @@ public class UsersDAO {
             System.out.println("제시문: " + pwLOCK);
             System.out.println("키워드를 입력 해 주세요. 키워드는 한글 기준 8자 이하 입니다.");
             System.out.print("키워드: ");
-            pwKey = sc.next();
+            String pwKey = sc.next();
             if (pwKey.length() <= 8) {
-                // 정답 확인
+                // if 정답 확인
                 break;
             } else {
                 System.out.println("키워드 입력 조건을 다시 확인 해 주세요");
             }
         }
         System.out.print("비밀번호는 " + userPW + "입니다.");
-        // 끌어오기 필요
+        // 비밀번호 끌어오기
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
     }
 }
 
