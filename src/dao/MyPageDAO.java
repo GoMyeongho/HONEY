@@ -174,9 +174,11 @@ public class MyPageDAO {
                 pwKEY = cui.getPwKey();
                 break;
             }
-            else if (pwKEY.length() > 8) System.out.println("제시어는 8자 이하 입력해주세요.");
+            else if (pwKEY.length() > 8) System.out.println("제시어 답은 8자 이하 입력해주세요.");
             else break;
         }
+        
+        // SQL
 
         String sql = "";
         if (userPW.equalsIgnoreCase("no")) { // 비밀번호 수정 안하는 경우
