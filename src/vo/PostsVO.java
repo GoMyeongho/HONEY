@@ -1,12 +1,17 @@
 package vo;
 
-public class PostsVO {
+public class PostsVO implements Comparable<PostsVO>{
     private int postno;
     private String title;
     private String content;
     private String author;
     private String date;
     private String category;
+
+    @Override
+    public int compareTo(PostsVO o) {
+        return o.postno - this.postno;
+    }
 
     public PostsVO() {
     }
@@ -83,5 +88,6 @@ public class PostsVO {
     public String toString() {
         return "=".repeat(60) + "\n" + title + " | " + author + " | " +
     }
+
 
 }

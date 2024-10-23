@@ -27,7 +27,8 @@ public class CommentsVO implements Comparable<CommentsVO> {
     }
 
     // 출력은 날짜도 해줘야 하기 때문에 생성자에 cDate 추가함
-    public CommentsVO(int postNo, String nName, String content, Date cDate) {
+    public CommentsVO(BigDecimal commNo, int postNo, String nName, String content, Date cDate) {
+        this.commNo = commNo;
         this.postNo = postNo;
         this.nName = nName;
         this.content = content;
@@ -70,5 +71,11 @@ public class CommentsVO implements Comparable<CommentsVO> {
         this.cDate = cDate;
     }
 
+    public BigDecimal getCommNo() {
+        return commNo;
+    }
 
+    public void setCommNo(BigDecimal commNo) {
+        this.commNo = commNo;
+    }
 }
