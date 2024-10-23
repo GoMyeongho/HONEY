@@ -75,7 +75,7 @@ public class MyPageDAO {
             System.out.print("변경할 비밀번호(8자 이상 20자 이하)(기존 비밀번호 유지는 no 입력) : ");
             userPW = sc.next();
 
-            Pattern passPattern1 = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\\\d)(?=.*\\\\W).{8,20}$"); 
+            Pattern passPattern1 = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\\\d)(?=.*\\\\W).{8,20}$");
             // 영어 대문자 또는 소문자가 최소 한 번 포함되어야 함
             // 숫자가 최소 한 번 포함되어야 함
             // 특수 문자가 최소 한 번 포함되어야 함
@@ -102,6 +102,16 @@ public class MyPageDAO {
             //중복 체크
             if (uv1.stream().filter(n -> check.equals(n.getnName())).findAny().orElse(null) !=null) {
                 System.out.println("이미 사용중인 닉네임입니다.");
+                // 조건이 일치하면, 즉 값이 존재하면, 결과가 null이 아니라는 뜻으로, uv1에 존재하는 기존 닉네임과 check에 입력한 새로운 닉네임이 동일하다는 의미로서
+                // null이 아니면 이미 사용 중인 닉네임으로 중복이되었음을 의미한다.
+                // stream 메소드는 데이터의 흐름을 표현하는 추상적인 개념으로, 요소를 처리하는 다양한 메소드를 제공
+                // filter 메소드는 스트림의 각 요소에 대해 조건을 적용하여, 조건을 만족하는 요소만을 포함하는 새로운 스트림을 생성
+                // n -> check.equals(n.getnName()) : 람다 표현식. n : 어떤 객체, n.getPhone() : 그 객체의 전화번호 가져옴
+                // check와 n.getPhone()의 값을 비교하여 같으면 true, 다르면 false를 반환
+                // findAny() : 이 메소드는 스트림에서 조건을 만족하는 아무 요소나 찾아 반환. 만약 해당 조건을 만족하는 요소가 없다면, Optional 객체를 반환
+                // orElse(null) : 이 메소드는 Optional 객체에 값이 없을 때, 즉 값이 존재하지 않는 경우 null을 반환하도록 설정합니다.
+                // 이를 통해 다음과 같은 효과를 기대할 수 있습니다: 조건을 만족하는 객체가 존재하지 않을 경우 null을 반환하게 되므로, 후속 연산에서 null 체크를 통해 추가적인 처리를 할 수 있습니다.
+                // !=null : 이 부분은 이전 연산의 결과가 null이 아닌지를 확인. 만약 null이 아니라면, 이는 조건에 맞는 객체가 존재함을 의미
             } else if (nName.equalsIgnoreCase("no")) {
                 nName = cui.getnName();
                 break;
