@@ -4,7 +4,10 @@ import common.Common;
 import vo.UsersVO;
 
 import java.sql.*;
+import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // 진기씨가 사용할 DAO 자바파일
 public class MyPageDAO {
@@ -14,6 +17,12 @@ public class MyPageDAO {
     Scanner sc = new Scanner(System.in);
 
     UsersDAO uDao = new UsersDAO();
+
+    ///////////////////////////////// 내 정보 보기 관련 메소드 ////////////////////////////
+
+    // 회원 정보 조회
+    // 현재 로그인 된 회원 정보를 불러와서 UsersVO 객체에 담아주는 메소드
+    // curr => current(현재)
 
     public UsersVO currUserInfo(String userID) {
         UsersVO currUser = null;
@@ -37,7 +46,7 @@ public class MyPageDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Common.close(rs)
+        Common.close(rs);
         Common.close(pstmt);
         Common.close(con);
         return currUser;
@@ -51,7 +60,7 @@ public class MyPageDAO {
         System.out.println("비밀번호 : " + cui.getUserPW());
         System.out.println("닉네임 : " + cui.getnName());
         System.out.println("휴대폰번호 : " + cui.getUpdateDATE());
-        System.out.println("제시어 문제 : " + cui.getPwLOCK());
+        System.out.println("제시어 : " + cui.getPwLOCK());
         System.out.println("제시어 답 : " + cui.getPwKey());
         System.out.println("=".repeat(24));
     }
@@ -94,7 +103,7 @@ public class MyPageDAO {
                 break;
             }
             else if (intN < 2) System.out.println("닉네임은 2자 이상 입력해주세요");
-            else if (intN > 30) System.out.println("닉네임은 30자 미만으로 입력");
+            else if (intN > 30) System.out.println("닉네임은 30자 미만으로 입력해주세요");
             else break;
         }
 
@@ -117,22 +126,42 @@ public class MyPageDAO {
         }
 
         // 수정할 제시어 문제 입력
-        String pwlock = "";
+        String pwLOCK = "";
         while (true) {
-            System.out.println("변경할 제시어 문제를 입력하세요 (기존 제시어 문제 유지는 no 입력) : ");
-            pwlock = sc.next();
-            String check = pwlock;
+            System.out.println("변경할 제시어를 입력하세요 (기존 제시어 유지는 no 입력) : ");
+            pwLOCK = sc.next();
+            String check = pwLOCK;
 
             //중복 체크
             if (uv1.stream().filter(n -> check.equals(n.getPwLOCK())).findAny().orElse(null) !=null) {
-                System.out.println("이미 사용중인 제시어 문제입니다.");
-            } else if (pwlock.equalsIgnoreCase("no")) {
-                pwlock = cui.getPwLOCK();
+                System.out.println("이미 사용중인 제시어입니다.");
+            } else if (pwLOCK.equalsIgnoreCase("no")) {
+                pwLOCK = cui.getPwLOCK();
                 break;
             }
-            else if (pwlock.length() != )
-
+            else if (pwLOCK.length() < 8) System.out.println("제시어는 8자 이상 입력해주세요.");
+            else if (pwLOCK.getBytes().length > 20) System.out.print("제시어는 20자 이하 영문자와 특수문자(&를 제외)로 입력해주세요.");
+            else break;
         }
+
+        // 수정할 제시어 답 입력
+        String pwKEY = "";
+        while (true) {
+            System.out.println("변경할 제시어 답을 입력하세요 (기존 제시어 답 유지는 no 입력) : ");
+            pwKEY = sc.next();
+            String check = pwKEY;
+
+            //중복체크
+            if (uv1.stream().filter(n -> check.equals(n.getPwKey())).findAny().orElse(null) !=null) {
+                System.out.println("이미 사용중인 제시어 답입니다.");
+            } else if (pwKEY.equalsIgnoreCase("no")) {
+                pwKEY = cui.getPwKey();
+                break;
+            }
+            else if (pwKEY.length() > 8) System.out.println("제시어는 8자 이하 입력해주세요.");
+            else break;
+        }
+
 
 
 
