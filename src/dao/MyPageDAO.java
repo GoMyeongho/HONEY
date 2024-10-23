@@ -15,20 +15,17 @@ public class MyPageDAO {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     Scanner sc = new Scanner(System.in);
-
     UsersDAO uDao = new UsersDAO();
 
     ///////////////////////////////// 내 정보 보기 관련 메소드 ////////////////////////////
 
     // 회원 정보 조회
     // 현재 로그인 된 회원 정보를 불러와서 UsersVO 객체에 담아주는 메소드
-    // curr => current(현재)
-
     public UsersVO currUserInfo(String userID) {
         UsersVO currUser = null;
         try {
             conn = Common.getConnection();
-            String sql = "SELECT USER_ID, USER_PW, NNAME, PHONE, UPDATE_DATE, PW_LOCK, PW_Key = ?)";
+            String sql = "SELECT USER_ID, USER_PW, NNAME, PHONE, UPDATE_DATE, PW_LOCK, PW_Key From USERS WHERE USER_ID = ?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, userID);
             rs = pstmt.executeQuery();
@@ -52,7 +49,8 @@ public class MyPageDAO {
         return currUser;
     }
 
-    // 내 정보 보기 출력
+    // 내 정보 보기
+
     // 매개변수로 currUserInfo(cui) 활용
     public void printUserInfo(UsersVO cui) {
         System.out.println("=".repeat(7) + "내 정보" + "=".repeat(7));
@@ -64,6 +62,7 @@ public class MyPageDAO {
         System.out.println("제시어 답 : " + cui.getPwKey());
         System.out.println("=".repeat(24));
     }
+
     // 내 정보 수정
     public void usersUpdate(UsersVO cui, String userID) {
         // 중복확인을 위해 만들어둔 전체 회원정보를 리스트로 담아주는 selectUsersInfo 활용
@@ -164,7 +163,7 @@ public class MyPageDAO {
 
         String sql = "";
         if (userPW.equalsIgnoreCase("no")) { // 비밀번호 수정 안하는 경우
-            sql = "UPDATE MEMBERS SET NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?";
+            sql = "UPDATE USERS SET NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?";
             try {
                 conn = Common.getConnection();
                 pstmt = conn.prepareStatement(sql);
@@ -178,7 +177,7 @@ public class MyPageDAO {
                 e.printStackTrace();
             }
         } else { // 비밀번호 수정하는 경우
-            sql = "UPDATE MEMBERS SET USER_PW = ?, NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?";
+            sql = "UPDATE USERS SET USER_PW = ?, NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?";
             try{
                 conn = Common.getConnection();
                 pstmt = conn.prepareStatement(sql);
