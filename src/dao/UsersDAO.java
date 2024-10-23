@@ -19,15 +19,17 @@ public class UsersDAO {
         sc = new Scanner(System.in);
     }
 
-    // !!!!!회원가입
+// !!!!!회원가입----------------------------------------------------------------------------------
     public void joinMember() {
 
         System.out.println("=====신규 회원 가입=====");
+        String userPW;
+        String userID;
     // 아이디 생성
         while (true) {
             System.out.println("아이디는 8자 이상 16자 이하의 영문 및 숫자이어야 합니다. (중복 불가능)");
             System.out.print("아이디: ");
-            String userID = noKor();
+            userID = noKor();
             List<String> IDList = new ArrayList<>();
             try {
                 conn = Common.getConnection();  // 오라클 DB 연결
@@ -64,7 +66,7 @@ public class UsersDAO {
             System.out.println("비밀번호는 8자 이상 16자 이하의 영문 및 숫자이어야 합니다.");
             System.out.println("비밀번호는 특수문자 및 영문 대소문자가 모두 포함되어야 합니다.");
             System.out.print("비밀번호: ");
-            String userPW = noKor();
+            userPW = noKor();
             if (userPW.length() >= 8 && userPW.length() <= 16) {
                 // if 비밀번호 특수문자 및 영문 대소문자 확인 및 한글이 포함되어있는지 확인
                 break;
@@ -154,7 +156,8 @@ public class UsersDAO {
             } else {
                 System.out.print("질문 생성 조건을 확인 후 다시 입력 해 주세요.");
             }
-            if(pwLOCK.contains(userPW) < 0) {
+            if(pwLOCK.contains(userPW)) {
+                // 위에서 사용한 pw 어떻게 가져오지
                 break;
             }
         }
@@ -168,7 +171,7 @@ public class UsersDAO {
                 System.out.print("키워드 생성 조건을 확인 후 다시 입력 해 주세요.");
                 continue;
             }
-            if(pwKey.contains(userPW) < 0) {
+            if(pwKey.contains(userPW)) {
                 break;
             }
         }
@@ -190,19 +193,20 @@ public class UsersDAO {
         }
 
 
-    // !!!!!아이디 찾기
+// !!!!!아이디 찾기------------------------------------------------------------------------------------------
     public void findID() {
+        String userID;
         Scanner sc = new Scanner(System.in);
         System.out.println("=====ID 찾기=====");
         String phone;
-        List<String> phonList = new ArrayList<>();
+        List<String> phoneList = new ArrayList<>();
         try {
             conn = Common.getConnection();  // 오라클 DB 연결
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT USERID FROM VM_LOGIN");
             while(rs.next()){
                 String Phone = rs.getString("Phone");
-                phonList.add(Phone);
+                phoneList.add(Phone);
             }
         } catch (Exception e){
             System.out.println(e + " 연결 실패");
@@ -215,25 +219,26 @@ public class UsersDAO {
             System.out.println("가입 시 사용했던 전화번호를 입력 해 주세요");
             System.out.println("전화번호는 010-0000-0000 형식으로 하이픈을 포함하여 입력 해 주세요");
             System.out.print("전화번호: ");
-            phone = sc.next();
+            phone = inputPhone();
             if (phone.length() == 13) {
-                // if 존재하는 전화번호인지 확인
-                // 존재하지 않는 전화번호 입니다.
 
-                // 아이디 끌어오기
-                //
             } else {
                 System.out.print("전화번호 입력 조건을 확인 후 다시 입력 해 주세요.");
                 continue;
             }
-            for (String e : phonList) {
-                // if 중복된 전화번호 확인
-                if (phonList.equals(e)){
-                    System.out.print("아이디는 " + userID + "입니다.");
-                    break;
-                }
-                else continue;
+            try {
+                conn = Common.getConnection();
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery("SELECT userID FROM USERS WHERE PHONE = '" + phone +"';");
+                rs.next();
+                userID = rs.getString("USERID");
+            }catch (Exception e) {
+                System.out.println(e + "연결 실패");
+                return;
             }
+            System.out.print("아이디는 " + userID + "입니다.");
+            // 데이터베이스에 있는 전화번호 확인하여 userID 가져오기
+            break;
         }
         Common.close(rs);
         Common.close(stmt);
@@ -241,8 +246,11 @@ public class UsersDAO {
     }
 
 
-    // !!!!!!비밀번호 찾기
+// !!!!!!비밀번호 찾기------------------------------------------------------------------------------
     public void findPW() {
+        String userID;
+        String pwLOCK;
+        String pwKey;
         Scanner sc = new Scanner(System.in);
         List<String> IDList = new ArrayList<>();
         try {
@@ -264,7 +272,7 @@ public class UsersDAO {
             System.out.println("가입한 아이디를 입력 해 주세요");
             System.out.print("아이디: ");
             System.out.println();
-            String userID = noKor();
+            userID = noKor();
             if (userID.length() >= 8 && userID.length() <= 16) {
             } else {
                 System.out.println("아이디 입력 조건을 다시 확인 해 주세요");
@@ -272,53 +280,54 @@ public class UsersDAO {
             }
             for (String e : IDList) {
                 if (IDList.equals(e)){
-                    break;
                 }
                 else continue;
             }
+            break;
         }
+
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT pwLOCK FROM USERS WHERE userID = '" + userID +"';");
+            rs.next();
+            pwLOCK = rs.getString("pwLOCK");
+        } catch (Exception e) {
+            System.out.println(e + "연결 실패");
+            return;
+        }
+        String userPW;
         while (true) {
             System.out.println("제시문: " + pwLOCK);
+            // 데이터베이스에 있는 아이디 확인하여 pwLOCK 가져오기
             System.out.println("키워드를 입력 해 주세요. 키워드는 한글 기준 8자 이하 입니다.");
             System.out.print("키워드: ");
-            String pwKey = noKor();
-            List<String> pwKeyList = new ArrayList<>();
-            try {
-                conn = Common.getConnection();  // 오라클 DB 연결
-                stmt = conn.createStatement();
-                rs = stmt.executeQuery("SELECT USERID FROM VM_LOGIN");
-                while(rs.next()){
-                    String pwKEY = rs.getString("pwKEY");
-                    IDList.add(pwKEY);
-                }
-            } catch (Exception e){
-                System.out.println(e + " 연결 실패");
-            } finally {
-                Common.close(rs);
-                Common.close(stmt);
-                Common.close(conn);
-            }
-
+            pwKey = sc.next();
             if (pwKey.length() <= 8) {
 
             } else {
                 System.out.println("키워드 입력 조건을 다시 확인 해 주세요");
-            } for (String e : pwKeyList) {
-                if (pwKeyList.equals(e)){
-                    break;
-                }
-                else continue;
+                continue;
             }
+            try {
+                conn = Common.getConnection();
+                stmt = conn.createStatement();
+                rs = stmt.executeQuery("SELECT userPW FROM USERS WHERE pwKey = '" + pwKey +"';");
+                rs.next();
+                userPW = rs.getString("userPW");
+            }catch (Exception e) {
+                System.out.println(e + "연결 실패");
+                return;
+            }
+            System.out.print("비밀번호는 " + userPW + "입니다.");
+            break;
         }
-        System.out.print("비밀번호는 " + userPW + "입니다.");
-        // 비밀번호 끌어오기
         Common.close(rs);
         Common.close(stmt);
         Common.close(conn);
     }
 
-
-
+//---------------------------------------------------------------------------------------------------------------------
     // 한글이 들어가지 않는지 확인하는 메서드(존재할 시 null리턴)
     public String noKor() {
         String name = sc.next();
