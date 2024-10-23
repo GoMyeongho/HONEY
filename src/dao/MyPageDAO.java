@@ -25,7 +25,7 @@ public class MyPageDAO {
         UsersVO currUser = null;
         try {
             conn = Common.getConnection();
-            String sql = "SELECT USER_ID, USER_PW, NNAME, PHONE, UPDATE_DATE, PW_LOCK, PW_Key From USERS WHERE USER_ID = ?)";
+            String sql = "SELECT USER_ID, USER_PW, NNAME, PHONE, UPDATE_DATE, PW_LOCK, PW_KEY From USERS WHERE USER_ID = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, userID);
             rs = pstmt.executeQuery();
@@ -42,10 +42,11 @@ public class MyPageDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            Common.close(rs);
+            Common.close(pstmt);
+            Common.close(conn);
         }
-        Common.close(rs);
-        Common.close(pstmt);
-        Common.close(conn);
         return currUser;
     }
 
