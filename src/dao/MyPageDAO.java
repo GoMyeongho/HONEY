@@ -75,13 +75,13 @@ public class MyPageDAO {
             System.out.print("변경할 비밀번호(8자 이상 20자 이하)(기존 비밀번호 유지는 no 입력) : ");
             userPW = sc.next();
 
-            Pattern passPattern1 = Pattern.compile("!@#$%^&*-+{1,2}$");
+            Pattern passPattern1 = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\\\d)(?=.*\\\\W).{8,20}$");
             Matcher passMatcher1 = passPattern1.matcher(userPW);
 
             if(userPW.equalsIgnoreCase("no")) break;
             else if (userPW.length() < 8) System.out.println("비밀번호는 8자 이상 입력해주세요.");
             else if (userPW.getBytes().length > 20) System.out.print("비밀번호는 20자 이하 영문자와 특수문자(&를 제외)로 입력해주세요.");
-            else if (!passMatcher1.find()) System.out.println("비밀번호는 영문자, 숫자, 특수기호만 사용 할 수 있습니다.");
+            else if (!passMatcher1.find()) System.out.println("비밀번호는 영문자, 숫자, 특수기호만 사용 할 수 있습니다."); // passpattern1에 정의된 패턴과 일치하지 않는 경우
             else if (userPW.indexOf('&') >= 0) System.out.println("&는 비밀번호로 사용할 수 없습니다.");
             else break;
         }
