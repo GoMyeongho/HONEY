@@ -38,6 +38,26 @@ public class MyPageDAO {
             e.printStackTrace();
         }
         Common.close(rs)
+        Common.close(pstmt);
+        Common.close(con);
+        return currUser;
     }
 
-}
+    // 내 정보 보기 출력
+    // 매개변수로 currUserInfo(cui) 활용
+    public void printUserInfo(UsersVO cui) {
+        System.out.println("=".repeat(7) + "내 정보" + "=".repeat(7));
+        System.out.println("아이디 : " + cui.getUserID());
+        System.out.println("비밀번호 : " + cui.getUserPW());
+        System.out.println("닉네임 : " + cui.getnName());
+        System.out.println("휴대폰번호 : " + cui.getUpdateDATE());
+        System.out.println("제시어 문제 : " + cui.getPwLOCK());
+        System.out.println("제시어 답 : " + cui.getPwKey());
+        System.out.println("=".repeat(24));
+
+
+
+
+
+
+    }
