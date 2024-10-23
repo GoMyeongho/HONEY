@@ -3,6 +3,7 @@ package vo;
 import java.sql.Date;
 
 public class UsersVO {
+
     private String userID;
     private String userPW;
     private String nName;
