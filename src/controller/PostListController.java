@@ -102,8 +102,10 @@ public class PostListController {
         LikesDAO likes = new LikesDAO();
         HashSet<LikesVO> likeSet = likes.likeSet(name);
         for (int i = page * 10; i < page * 10 + 10; i++) {
+            System.out.println("-".repeat(60));
             System.out.println("[" + i % 10 + 1 + "] " + list.get(i).getCategory() + " | " + list.get(i).getTitle() + " | "
-                    + list.get(i).getAuthor() + " [ " + likes.likeMark(likeSet, list.get(i).getPostno()) + " ]");
+                    + list.get(i).getAuthor() + " | " + list.get(i).getDate() + likes.likeMark(likeSet, list.get(i).getPostno()) + " ]");
+            System.out.println("-".repeat(60));
         }
         System.out.println("=".repeat(60));
 

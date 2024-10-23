@@ -3,14 +3,14 @@ package dao;
 import common.Common;
 import java.sql.Date;
 import vo.CommentsVO;
+import vo.PostsVO;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 
 public class CommentsDAO {
     Connection conn = null;
@@ -22,8 +22,9 @@ public class CommentsDAO {
         sc = new Scanner(System.in);
     }
 
-    public HashSet<CommentsVO> commentsSet (int postNo) {
-        HashSet<CommentsVO> set = new HashSet<>();
+
+    public List<CommentsVO> commentsSet (int postNo) {
+        List<CommentsVO> set = new ArrayList<>();
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
@@ -59,6 +60,26 @@ public class CommentsDAO {
             System.out.println(e + "의 이유로 연결에 실패했습니다.");
         }
         return set;
+    }
+
+    public boolean addComment (CommentsVO vo, int postNo) {
+            String sql = "INSERT INTO POSTS(POSTNO, NNAME, CCONTENT, CDATE) VALUES(?,?,?,SYSDATE)";
+            try {
+                conn = Common.getConnection();
+                psmt = conn.prepareStatement(sql);
+                psmt.setInt(1, vo.getPostNo());
+                psmt.setString(2, vo.getnName());
+                psmt.setString(3, vo.getContent());
+                psmt.executeUpdate();   // SQL 쿼리 실행
+                return true;
+            } catch (Exception e) {
+                System.out.println(e + "글 작성에 실패 하였습니다.");
+                return false;
+            } finally { // psmt -> conn 순서로 데이터베이스 닫기
+                Common.close(psmt);
+                Common.close(conn);
+            }
+        }
     }
 
 

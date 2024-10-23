@@ -47,6 +47,15 @@ public class LikesDAO {
         return set;
     }
 
+    public boolean isLike(HashSet<LikesVO> set, String nName) {
+        for (LikesVO vo : set) {
+            if (vo.getnName() == nName) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String likeMark(HashSet<LikesVO> set, int POSTNO) {
         for (LikesVO vo : set) {
             if (vo.getPostNo() == POSTNO) {
@@ -54,5 +63,37 @@ public class LikesDAO {
             }
         }
         return heart[0];
+    }
+
+    public void cancelLike(int postNo, String nName) {
+        String sql = "DELETE FROM LIKES WHERE NNAME = ? AND POSTNO = ?;";
+
+        try {
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1, nName);
+            psmt.setInt(2, postNo);
+            psmt.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e + "취소 실패");
+        }
+        Common.close(psmt);
+        Common.close(conn);
+    }
+    public void addLike(int postNo, String nName) {
+        String sql = "INSERT INTO LIKES (NNAME, POSTNO) VALUES (?, ?);";
+        try {
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1, nName);
+            psmt.setInt(2, postNo);
+            psmt.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e + "추가 실패");
+        }
+        Common.close(psmt);
+        Common.close(conn);
     }
 }
