@@ -33,14 +33,11 @@ public class MyPageDAO {
 
                 currUser = new UsersVO(userID, userPW, nName, phone, updateDATE, pwLOCK, pwKey);
 
-
             }
-
-
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        Common.close(rs)
     }
 
 }

@@ -19,6 +19,7 @@ public class PostListDAO {
     Scanner sc = null;
     public PostListDAO() {
         sc = new Scanner(System.in);
+
     }
 
     // 공통 페이지 조회 기능 구현

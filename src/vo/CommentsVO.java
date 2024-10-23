@@ -1,9 +1,10 @@
 package vo;
 
+
 import java.math.BigDecimal;
 import java.sql.Date;
 
-public class CommentsVO {
+public class CommentsVO implements Comparable<CommentsVO> {
     private int postNo;
     private String nName;
     private String content;
@@ -11,6 +12,11 @@ public class CommentsVO {
     private BigDecimal commNo;
     // 댓글 보이는 순서를 위해 추가한 값
     // 날짜순으로 하지 않는 이유는 대댓글 기능을 위해서
+
+    @Override
+    public int compareTo(CommentsVO o) {
+        return this.commNo.compareTo(o.commNo);
+    }
 
     // 날짜는 SYSDATE 를 사용할 것이기 때문에
     // SELECT 용은 cDate를 받지 않음
@@ -21,7 +27,8 @@ public class CommentsVO {
     }
 
     // 출력은 날짜도 해줘야 하기 때문에 생성자에 cDate 추가함
-    public CommentsVO(int postNo, String nName, String content, Date cDate) {
+    public CommentsVO(BigDecimal commNo, int postNo, String nName, String content, Date cDate) {
+        this.commNo = commNo;
         this.postNo = postNo;
         this.nName = nName;
         this.content = content;
@@ -62,5 +69,13 @@ public class CommentsVO {
 
     public void setcDate(Date cDate) {
         this.cDate = cDate;
+    }
+
+    public BigDecimal getCommNo() {
+        return commNo;
+    }
+
+    public void setCommNo(BigDecimal commNo) {
+        this.commNo = commNo;
     }
 }

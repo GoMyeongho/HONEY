@@ -4,10 +4,11 @@ public class LikesVO {
     private int postNo;
     private String nName;
 
-    public LikesVO(int postNo, String nName, int likes) {
+    public LikesVO(int postNo, String nName) {
         this.postNo = postNo;
         this.nName = nName;
     }
+
 
     public LikesVO() {}
 
