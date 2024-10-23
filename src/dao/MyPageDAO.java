@@ -116,8 +116,8 @@ public class MyPageDAO {
                 nName = cui.getnName();
                 break;
             }
-            else if (intN < 2) System.out.println("닉네임은 2자 이상 입력해주세요");
-            else if (intN > 30) System.out.println("닉네임은 30자 미만으로 입력해주세요");
+            else if (intN < 2) System.out.println("닉네임은 2자 이상으로 입력해주세요");
+            else if (intN > 30) System.out.println("닉네임은 30자 이하로 입력해주세요");
             else break;
         }
 
@@ -146,6 +146,8 @@ public class MyPageDAO {
             pwLOCK = sc.next();
             String check = pwLOCK;
 
+            int intL = nName.getBytes().length;
+            
             //중복 체크
             if (uv1.stream().filter(n -> check.equals(n.getPwLOCK())).findAny().orElse(null) !=null) {
                 System.out.println("이미 사용중인 제시어입니다.");
@@ -153,8 +155,8 @@ public class MyPageDAO {
                 pwLOCK = cui.getPwLOCK();
                 break;
             }
-            else if (pwLOCK.length() < 8) System.out.println("제시어는 8자 이상 입력해주세요.");
-            else if (pwLOCK.getBytes().length > 20) System.out.print("제시어는 20자 이하 영문자와 특수문자(&를 제외)로 입력해주세요.");
+            else if (intL < 8) System.out.println("제시어는 8자 이상으로 입력해주세요.");
+            else if (intL > 20) System.out.print("제시어는 20자 이하로 입력해주세요.");
             else break;
         }
 
