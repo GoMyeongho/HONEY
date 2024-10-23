@@ -162,11 +162,39 @@ public class MyPageDAO {
             else break;
         }
 
-
-
-
-
-
-
+        String sql = "";
+        if (userPW.equalsIgnoreCase("no")) { // 비밀번호 수정 안하는 경우
+            sql = "UPDATE MEMBERS SET NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?";
+            try {
+                con = Common.getConnection();
+                pstmt = con.prepareStatement(sql);
+                pstmt.setString(1, nName);
+                pstmt.setString(2, phone);
+                pstmt.setString(3, pwLOCK);
+                pstmt.setString(4, pwKEY);
+                pstmt.setString(5, userID);
+                pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else { // 비밀번호 수정하는 경우
+            sql = "UPDATE MEMBERS SET USER_PW = ?, NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?";
+            try{
+                con = Common.getConnection();
+                pstmt = con.prepareStatement(sql);
+                pstmt.setString(1, userPW);
+                pstmt.setString(2, nName);
+                pstmt.setString(3, phone);
+                pstmt.setString(4, pwLOCK);
+                pstmt.setString(5, pwKEY);
+                pstmt.setString(6, userID);
+                pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        Common.close(pstmt);
+        Common.close(con);
+        System.out.println("회원정보 수정이 완료되었습니다.");
     }
 }
