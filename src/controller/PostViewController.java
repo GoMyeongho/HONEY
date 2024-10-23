@@ -23,6 +23,13 @@ public class PostViewController {
     CommentsDAO comments = new CommentsDAO();
     List<CommentsVO> cList = new ArrayList<CommentsVO>();
     HashSet<LikesVO> likeSet = new HashSet<>();
+    PostsVO vo;
+
+    public PostViewController(int postSel, String name) {
+        showPage(postSel,name);
+        while(selectOptions()) showPage(postSel,name);
+
+    }
 
     public void showPage(int postSel, String name){
         this.postSel = postSel;
@@ -32,7 +39,7 @@ public class PostViewController {
         likeSet = likes.likeSet(postSel);
         int likeCount = likeSet.size();
 
-        PostsVO vo = dao.viewPost(postSel);
+        vo = dao.viewPost(postSel);
         System.out.println("=".repeat(60));
         System.out.println("[" + postSel + "] " + vo.getCategory() + " | " + vo.getTitle() + " | " + vo.getAuthor() + " | " + vo.getDate());
         System.out.println("=".repeat(60));
@@ -63,6 +70,7 @@ public class PostViewController {
         if (vo.getAuthor().equals(name)) {
             System.out.println("  [2] 댓글 쓰기  [3] 글 수정하기  [삭제] 글 삭제하기  [0] 나가기");
         }
+        else System.out.println("  [2] 댓글 쓰기                                       [0] 나가기");
     }
     public boolean selectOptions() {
         String sel = sc.next();
@@ -79,7 +87,38 @@ public class PostViewController {
                     case 1, 2, 3, 4, 5:
 
                         return true;
+                    case 9:
+                        return true;
+                    case 0:
+                        return false;
+                    default:
+                        System.out.println("잘못된 입력입니다.");
+                        return true;
                 }
+            case "3":
+                if (vo.getAuthor().equals(name)) {
+
+                }
+                else System.out.println("잘못된 입력입니다.");
+                return true;
+            case "삭제":
+                if (vo.getAuthor().equals(name)) {
+
+
+                System.out.println("정말로 삭제하시려면 <삭제확인>을 입력해주세요 ");
+                if (sc.next().equals("삭제확인")) {
+
+                    return false;
+                }
+                else return true;
+                }
+                else System.out.println("잘못된 입력입니다.");
+                return true;
+            case "0":
+                return false;
+            default:
+                System.out.println("잘못된 입력입니다.");
+                return true;
         }
     }
 }
