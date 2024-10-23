@@ -146,8 +146,8 @@ public class MyPageDAO {
             pwLOCK = sc.next();
             String check = pwLOCK;
 
-            int intL = nName.getBytes().length;
-            
+            int intL = pwLOCK.getBytes().length;
+
             //중복 체크
             if (uv1.stream().filter(n -> check.equals(n.getPwLOCK())).findAny().orElse(null) !=null) {
                 System.out.println("이미 사용중인 제시어입니다.");
