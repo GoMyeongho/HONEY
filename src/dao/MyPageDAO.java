@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 // 진기씨가 사용할 DAO 자바파일
 public class MyPageDAO {
-    Connection con = null;
+    Connection conn = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     Scanner sc = new Scanner(System.in);
@@ -27,9 +27,9 @@ public class MyPageDAO {
     public UsersVO currUserInfo(String userID) {
         UsersVO currUser = null;
         try {
-            con = Common.getConnection();
+            conn = Common.getConnection();
             String sql = "SELECT USER_ID, USER_PW, NNAME, PHONE, UPDATE_DATE, PW_LOCK, PW_Key = ?)";
-            pstmt = con.prepareStatement(sql);
+            pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, userID);
             rs = pstmt.executeQuery();
             if (rs.next()){
@@ -48,7 +48,7 @@ public class MyPageDAO {
         }
         Common.close(rs);
         Common.close(pstmt);
-        Common.close(con);
+        Common.close(conn);
         return currUser;
     }
 
@@ -166,8 +166,8 @@ public class MyPageDAO {
         if (userPW.equalsIgnoreCase("no")) { // 비밀번호 수정 안하는 경우
             sql = "UPDATE MEMBERS SET NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?";
             try {
-                con = Common.getConnection();
-                pstmt = con.prepareStatement(sql);
+                conn = Common.getConnection();
+                pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, nName);
                 pstmt.setString(2, phone);
                 pstmt.setString(3, pwLOCK);
@@ -180,8 +180,8 @@ public class MyPageDAO {
         } else { // 비밀번호 수정하는 경우
             sql = "UPDATE MEMBERS SET USER_PW = ?, NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?";
             try{
-                con = Common.getConnection();
-                pstmt = con.prepareStatement(sql);
+                conn = Common.getConnection();
+                pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, userPW);
                 pstmt.setString(2, nName);
                 pstmt.setString(3, phone);
@@ -194,7 +194,9 @@ public class MyPageDAO {
             }
         }
         Common.close(pstmt);
-        Common.close(con);
+        Common.close(conn);
         System.out.println("회원정보 수정이 완료되었습니다.");
     }
 }
+
+
