@@ -4,7 +4,7 @@ public class LikesVO {
     private int postNo;
     private String nName;
 
-    public LikesVO(int postNo, String nName,) {
+    public LikesVO(int postNo, String nName) {
         this.postNo = postNo;
         this.nName = nName;
     }

@@ -27,7 +27,7 @@ public class LikedDAO {
             conn = Common.getConnection();
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT POSTNO FROM LIKES WHERE NNAME = '"+ nName + "';");
-            while (rs.next()) new LikesVO(rs.getInt("POSTNO"));
+            while (rs.next()) new LikesVO(rs.getInt("POSTNO"),nName);
         }catch (Exception e) {
             System.out.println(e + "의 이유로 연결에 실패했습니다.");
         }
