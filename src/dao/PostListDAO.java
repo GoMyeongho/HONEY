@@ -66,4 +66,6 @@ public class PostListDAO {
     }
     public final static String allSearch = "SELECT * From VM_POSTS_PAGE";
 
+
+
 }

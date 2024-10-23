@@ -10,14 +10,14 @@ import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Scanner;
 
-public class LikedDAO {
+public class LikesDAO {
     private final static String[] heart = {"♡", "♥"};
     Connection conn = null;
     Statement stmt = null;
     PreparedStatement psmt = null;
     ResultSet rs = null;
     Scanner sc = null;
-    public LikedDAO() {
+    public LikesDAO() {
         sc = new Scanner(System.in);
     }
 
