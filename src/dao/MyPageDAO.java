@@ -41,7 +41,7 @@ public class MyPageDAO {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.getStackTrace();
         } finally {
             Common.close(rs);
             Common.close(pstmt);
@@ -175,7 +175,7 @@ public class MyPageDAO {
                 pstmt.setString(5, userID);
                 pstmt.executeUpdate();
             } catch (Exception e) {
-                e.printStackTrace();
+                e.getStackTrace();
             }
         } else { // 비밀번호 수정하는 경우
             sql = "UPDATE USERS SET USER_PW = ?, NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?";
@@ -190,7 +190,7 @@ public class MyPageDAO {
                 pstmt.setString(6, userID);
                 pstmt.executeUpdate();
             } catch (Exception e) {
-                e.printStackTrace();
+                e.getStackTrace();
             }
         }
         Common.close(pstmt);
