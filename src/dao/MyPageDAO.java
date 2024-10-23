@@ -75,7 +75,11 @@ public class MyPageDAO {
             System.out.print("변경할 비밀번호(8자 이상 20자 이하)(기존 비밀번호 유지는 no 입력) : ");
             userPW = sc.next();
 
-            Pattern passPattern1 = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\\\d)(?=.*\\\\W).{8,20}$");
+            Pattern passPattern1 = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\\\d)(?=.*\\\\W).{8,20}$"); 
+            // 영어 대문자 또는 소문자가 최소 한 번 포함되어야 함
+            // 숫자가 최소 한 번 포함되어야 함
+            // 특수 문자가 최소 한 번 포함되어야 함
+            // 전체 길이가 8자 이상 20자 이하이어야 함
             Matcher passMatcher1 = passPattern1.matcher(userPW);
 
             if(userPW.equalsIgnoreCase("no")) break;
