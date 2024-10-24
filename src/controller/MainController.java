@@ -25,14 +25,16 @@ public class MainController {
         System.out.println("시작하시려면 Enter 키를 눌러주세요");
         sc.nextLine();
         while(true) {
-            if (addr == 0) mainPage();
-            if (addr == 1) loginMain();
+            if (mainPage()){
+            while (loginMain());
+            }
+
 
 
             }
         }
 
-    public void mainPage(){
+    public boolean mainPage(){
         UsersController uCon = new UsersController();
         System.out.println("=".repeat(60));
         System.out.println("[1] 로그인 하기");
@@ -67,24 +69,22 @@ public class MainController {
                             break;
                         }
                     }
-                    if (name != null) addr = 1;
-                    break;
+                    if (name != null) return false;
+                    return true;
                 case "2":
                     uCon.JoinUser();
-                    break;
+                    return true;
                 case "3":
                     uCon.findUserID();
-                    break;
+                    return true;
                 case "4":
                     uCon.findUserPassword();
-                    break;
+                    return true;
                 case "0":
-                    return;
+                    System.exit(1);
                 default:
                     System.out.println("잘못된 입력입니다.");
-                    continue;
             }
-            break;
         }
 
     }
@@ -98,7 +98,7 @@ public class MainController {
         sc.nextLine();
         return new LoginDAO().login(ID,PW);
     }
-    public void loginMain() {
+    public boolean loginMain() {
         sc.nextLine();
         System.out.println("=".repeat(60));
         System.out.println("[1] 게시판 확인 하기");
@@ -124,25 +124,25 @@ public class MainController {
         switch (sel) {
             case "1":
                 while (listMain()){}
-                return;
+                return true;
             case "2":
                 System.out.println();
                 System.out.println("=".repeat(60));
                 mpCon.viewUserInfo(ID);
                 mpCon.showMenu();
-                return;
+                return true;
             case "3":
                 new PostMakeController().postMakeConsole();
-                break;
+                return true;
             case "9":
                 name = null;
                 postSel = 0;
-                addr = 0;
-                return;
+                return false;
             case "0":
-                return;
+                System.exit(1);
             default:
                 System.out.println("잘못된 입력입니다.");
+                return true;
         }
     }
 
