@@ -75,14 +75,13 @@ public class PostMakeController {
                 if (title.length() < 100) { // 글자수 체크
                     postsVO.setTitle(title);    // 이상 없으면 값을 VO로 전달
                     System.out.println("제목입력을 완료 하였습니다.");
-                    break;  // 제목 입력에 이상이 없을시 해당 메뉴 종료
+                    isValid = true;
                 } else {
                     System.out.println("제목은 100글자 이내로 입력 해 주세요.");  // 글자수 제한이 걸릴시 뒤로 돌아감
                 }
             } catch (NullPointerException e) {  // 제목에 Null 값이 들어 왔을때에 대비한 예외처리
                 System.out.println("제목을 입력 해 주세요");
             }
-            isValid = true;
         }
     }
 
