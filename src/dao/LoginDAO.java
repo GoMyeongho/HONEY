@@ -21,6 +21,7 @@ public class LoginDAO {
             rs = stmt.executeQuery("SELECT * FROM VM_LOGIN WHERE USERID = '"+ ID +"';");
             rs.next();
             if (rs.getString("PASSWORD").equals(password)) return rs.getString("NNAME");
+            else return null;
         }catch (Exception e) {
             System.out.println(e + "의 이유로 연결 실패");
         }

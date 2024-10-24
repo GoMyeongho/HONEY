@@ -1,6 +1,7 @@
 package controller;
 
 import dao.CategoryDAO;
+import dao.PostMakeDAO;
 import vo.PostsVO;
 
 import java.util.InputMismatchException;
@@ -34,6 +35,7 @@ public class PostMakeController {
             System.out.println("작성된 글 내용:\n" + postsVO.getContent());
             break;
         }
+        new PostMakeDAO().postInsert(postsVO);
     }
 
     public void cateSelection(PostsVO postsVO) {
@@ -55,7 +57,7 @@ public class PostMakeController {
                     System.out.println(selectedCategory + "를 선택하셨습니다.");    // 카테고리 선택후 한번더 확인을 위해 사용자에게 출력
                     isValid = true; // 올바르게 작동시 While 종료
                 } else {    // 카테고리 선택옵션 범위를 벗어날때 예외처리
-                    System.out.println("올바르지 않은 입력입니다, 1~4만 입력 가능합니다." + categories.size() + " 사이의 번호를 입력해 주세요.");
+                    System.out.println("올바르지 않은 입력입니다" + categories.size() + " 사이의 번호를 입력해 주세요.");
                 }
             } catch (InputMismatchException e) {    // 숫자가 아닌 문자를 입력 받았을때 예외처리 구문
                 System.out.println("숫자만 입력 해 주세요.");

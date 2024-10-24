@@ -17,14 +17,15 @@ public class PostListController {
     private int maxPage;
 
 
+
     Scanner sc = null;
 
     public PostListController(int sel, String name, PostListDAO dao) {
         sc = new Scanner(System.in);
+        List<PostsVO> list = selectSearchOption(sel, name, dao);
         while (true) {
             postSel = 0;
             page = 0;
-            List<PostsVO> list = selectSearchOption(sel, name, dao);
             if (list != null && !list.isEmpty()) {
                 showSelections(list, sel, name, dao);
             } else {
@@ -37,6 +38,8 @@ public class PostListController {
             while(inPageSet()) showSelections(list, sel, name, dao);
             if (postSel > 0) {
                 postSel = list.get(postSel + page * 10 -1).getPostno();
+                new PostViewController(postSel, name);
+                continue;
             }
             break;
 
@@ -142,6 +145,7 @@ public class PostListController {
     public int getPostSel() {
         return postSel;
     }
+
 }
 
 
