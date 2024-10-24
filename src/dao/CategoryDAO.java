@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryDAO {
+public class CategoryDAO {  // 기존의 POST DAO 에서 카테고리 선택을 위한 카테고리 전용 DAO
     Connection conn = null;
     Statement stmt = null;
     ResultSet rs = null;
