@@ -71,38 +71,51 @@ public class PostMakeController {
             System.out.println("*주의* 제목은 100자 이내로 입력 하세요.");
             System.out.print("제목을 입력 해 주세요 : ");
             title = sc.nextLine();  // 입력값을 title 변수에 담아둔다
-            try {
                 if (title.length() < 100) { // 글자수 체크
                     postsVO.setTitle(title);    // 이상 없으면 값을 VO로 전달
                     System.out.println("제목입력을 완료 하였습니다.");
                     isValid = true;
+                } else if (title.trim().isEmpty()) {
+                    System.out.println("제목을 입력 해 주세요.");
                 } else {
                     System.out.println("제목은 100글자 이내로 입력 해 주세요.");  // 글자수 제한이 걸릴시 뒤로 돌아감
-                }
-            } catch (NullPointerException e) {  // 제목에 Null 값이 들어 왔을때에 대비한 예외처리
-                System.out.println("제목을 입력 해 주세요");
             }
         }
     }
-
     public void contentBuilder(PostsVO postsVO) {
         StringBuilder content = new StringBuilder();
-        String line;    //  엔터키를 한번 눌렀을때 빈 라인을 생성하기 위한 변수, 기존 엔터는 입력을 받지만 여기서는 한번은 줄바꿈 두번은 입력완료로 간주
-        System.out.print("글 내용을 입력 하세요 (엔터 두번 누를시 입력완료) :");
+        Scanner sc = new Scanner(System.in);
+        String line;
+        int emptyLineCount = 0; // 빈 줄의 수를 카운트
+        System.out.print("글 내용을 입력 하세요 (엔터 두 번 누를 시 입력 완료) :");
         while (true) {
-            try {
-                line = sc.nextLine();
-                if(line.isEmpty()) {    // 빈칸인 상태에서 엔터를 누르면 입력으로 간주 된다. 2줄띄기는 수정이 필요함*
-                    break;
+            line = sc.nextLine();
+            if (line.isEmpty()) { // 사용자가 엔터를 눌렀을 때
+                emptyLineCount++; // 빈 줄 카운트 증가
+                if (emptyLineCount >= 1) { // 한번의 빈 줄 입력 시
+                    if (content.length() > 0) { // 내용이 있는 경우에만 종료
+                        System.out.println("내용 입력을 완료 하였습니다.");
+                        break;
+                    } else {
+                        System.out.print("내용이 없습니다. 재입력 해 주세요 : "); // 내용이 없으면 오류
+                        emptyLineCount = 0; // 빈 줄 카운트를 초기화하여 재입력 대기
+                    }
                 }
-                if (content.length() + line.length() > 200) {   // 한글 기준으로 200자를 넘어가면 제한이 걸림. (늘릴시 데이터베이스 제한 수정 필요)
-                    System.out.println("허용된 최대 글자수를 초과 했습니다.");
-                    break;
-                }
-                content.append(line).append("\n");  // 줄바꿈을 돕는 Append \n 으로 바꿔줌
-            } catch (NullPointerException e) {
-                System.out.println("본문의 내용이 비어 있습니다, 다시 입력해 주세요. ");    // 본문 내용에 Null 값이 들어오는것을 방지한다.
+                continue; // 다음 루프 반복
             }
+            // 빈 줄 카운트 초기화
+            emptyLineCount = 0;
+            // 최대 글자 수 초과 체크
+            if (content.length() + line.length() > 200) {
+                System.out.print("허용된 최대 글자수를 초과했습니다. 내용을 재입력 해 주세요 : ");
+                continue; // 최대 글자 수 초과 시 계속 입력 받기
+            }
+            // 공백 체크
+            if (line.trim().isEmpty()) {
+                System.out.print("내용이 없습니다. 재입력 해 주세요 : "); // 공백만 입력 시 오류
+                continue; // 계속 입력 받기
+            }
+            content.append(line).append("\n"); // 줄바꿈을 돕는 Append \n으로 추가
         }
         postsVO.setContent(content.toString()); // 본문 내용 VO로 전달
     }
