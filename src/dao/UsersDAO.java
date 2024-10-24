@@ -350,7 +350,7 @@ public class UsersDAO {
     public String noKor() {
         String name = sc.next();
         for (int i = 0; i < name.length(); i++) {
-            if (name.charAt(i) < 33 || name.charAt(i) > 126) return null;
+            if (name.charAt(i) < 33 || name.charAt(i) > 126) return "";
         }
         return name;
     }

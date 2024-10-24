@@ -59,8 +59,4 @@ public class MyPageController {
         }
     }
 
-    public static void main(String[] args) {
-        MyPageController controller = new MyPageController();
-        controller.showMenu(); // 메뉴 표시
-    }
 }

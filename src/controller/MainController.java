@@ -28,11 +28,8 @@ public class MainController {
             if (mainPage()){
             while (loginMain());
             }
-
-
-
-            }
         }
+    }
 
     public boolean mainPage(){
         UsersController uCon = new UsersController();
@@ -73,13 +70,13 @@ public class MainController {
                     return true;
                 case "2":
                     uCon.JoinUser();
-                    return true;
+                    return false;
                 case "3":
                     uCon.findUserID();
-                    return true;
+                    return false;
                 case "4":
                     uCon.findUserPassword();
-                    return true;
+                    return false;
                 case "0":
                     System.exit(1);
                 default:
