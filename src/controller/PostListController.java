@@ -38,7 +38,7 @@ public class PostListController {
             while(inPageSet()) showSelections(list, sel, name, id, dao);
             if (postSel > 0) {
                 postSel = list.get(postSel + page * 10 -1).getPostno();
-                new PostViewController(postSel, name);
+                new PostViewController(postSel, name, id);
                 continue;
             }
             break;

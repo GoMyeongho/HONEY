@@ -72,7 +72,7 @@ public class CommentsDAO {
                 psmt.setInt(1, vo.getCommNo());
                 psmt.setInt(2, vo.getSubNo());
                 psmt.setInt(3, vo.getPostNo());
-                psmt.setString(4, vo.getnName());
+                psmt.setString(4, vo.getUserId());
                 psmt.setString(5, vo.getContent());
                 psmt.executeUpdate();   // SQL 쿼리 실행
                 return true;
@@ -85,7 +85,7 @@ public class CommentsDAO {
             }
     }
     public boolean updateComment (CommentsVO vo) {
-        String sql = "UPDATE COMMENTS SET  CCONTENT = ?,  WHERE POSTNO = ? AND COMMNO = ? AND SUBNO = ?";
+        String sql = "UPDATE COMMENTS SET CCONTENT = ?,  WHERE POSTNO = ? AND COMMNO = ? AND SUBNO = ?";
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
@@ -122,14 +122,15 @@ public class CommentsDAO {
         }
     }
     public int getMaxSubNo(CommentsVO vo) {
-        String sql = "SELECT MAX(SUBNO) FROM COMMENT WHERE POSTNO = ? and COMMNO = ? GROUP BY COMMNO";
+        String sql = "SELECT MAX(SUBNO) FROM COMMENTS WHERE POSTNO = ? and COMMNO = ? ";
+        int maxNo;
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
             psmt.setInt(1, vo.getPostNo());
             psmt.setInt(2, vo.getCommNo());
             psmt.executeQuery();
-            rs.next();
+            while(rs.next()) maxNo = rs.getInt(1);
             return rs.getInt(1) + 1;
         } catch (Exception e){
             System.out.println(e + "의 이유로 연결실패");
@@ -141,13 +142,14 @@ public class CommentsDAO {
         }
     }
     public int getMaxCommNo(int postNo) {
-        String sql = "SELECT MAX(SUBNO) FROM COMMENT WHERE POSTNO = ?  GROUP BY POSTNO";
+        String sql = "SELECT MAX(SUBNO) FROM COMMENTS WHERE POSTNO = ?";
+        int maxNo;
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
             psmt.setInt(1, postNo);
             psmt.executeQuery();
-            rs.next();
+            while(rs.next()) maxNo = rs.getInt(1);
             return rs.getInt(1) + 1;
         } catch (Exception e){
             System.out.println(e + "의 이유로 연결실패");

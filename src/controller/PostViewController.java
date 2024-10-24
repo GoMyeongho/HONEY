@@ -15,6 +15,7 @@ public class PostViewController {
     private int page= 0;
     private int postSel;
     private String name;
+    private String id;
     PostViewDAO dao = new PostViewDAO();
     LikesDAO likes = new LikesDAO();
     CommentsDAO comments = new CommentsDAO();
@@ -23,17 +24,18 @@ public class PostViewController {
     PostsVO vo;
     static List<String> category = new CategoryDAO().getCategories();
 
-    public PostViewController(int postSel, String name) {
-        do showPage(postSel,name);
+    public PostViewController(int postSel, String name,String id) {
+        this.postSel = postSel;
+        this.name = name;
+        this.id = id;
+        do showPage(postSel,name,id);
         while(selectOptions());
     }
 
-    public void showPage(int postSel, String name){
-        this.postSel = postSel;
-        this.name = name;
+    public void showPage(int postSel, String name, String id){
         cList = comments.commentsSet(postSel);
         Collections.sort(cList);
-        likeSet = likes.likeSet(postSel);
+        likeSet = likes.likeSet(postSel,id);
         int likeCount = likeSet.size();
 
         vo = dao.viewPost(postSel);
@@ -46,7 +48,7 @@ public class PostViewController {
         System.out.print(" ".repeat(30));
         if (likes.isLike(likeSet, name)) System.out.println("♥");
         else System.out.println("♡");
-        System.out.print(" ".repeat(29));
+        System.out.print(" ".repeat(30));
         System.out.println(likeCount);
         System.out.println();
 
@@ -72,8 +74,8 @@ public class PostViewController {
         String sel = sc.next();
         switch (sel) {
             case "1":
-                if (likes.isLike(likeSet, name)) likes.cancelLike(postSel, name);
-                else likes.addLike(postSel, name);
+                if (likes.isLike(likeSet, name)) likes.cancelLike(postSel, id);
+                else likes.addLike(postSel, id);
                 return true;
             case "2":
                 System.out.println("댓글을 쓸 위치를 선택하시오");
@@ -82,11 +84,16 @@ public class PostViewController {
                 CommentsVO mkComm;
                 switch (choice) {
                     case 1, 2, 3, 4, 5, 6, 7, 8:
+                        if(cList.size() < page * 8 + choice - 1){
+                            System.out.println("해당하는 댓글이 없습니다");
+                            return true;
+                        }
                         CommentsVO tempVO = cList.get(page * 8 + choice - 1);
                         int subNo = comments.getMaxSubNo(tempVO);
                         mkComm = getCommentsVO();
                         if(mkComm == null) return true;
                         mkComm.setnName(name);
+                        mkComm.setUserId(id);
                         mkComm.setSubNo(subNo);
                         mkComm.setPostNo(postSel);
                         mkComm.setCommNo(tempVO.getCommNo());
@@ -97,6 +104,7 @@ public class PostViewController {
                         mkComm = getCommentsVO();
                         if(mkComm == null) return true;
                         mkComm.setnName(name);
+                        mkComm.setUserId(id);
                         mkComm.setCommNo(commNo);
                         mkComm.setPostNo(postSel);
                         mkComm.setSubNo(1);
@@ -144,8 +152,8 @@ public class PostViewController {
             content += temp;
             temp = sc.nextLine();
             temp += "\n";
-            if (temp.equals("[완료]")) break;
-            if (temp.equals("[취소]")) return null;
+            if (temp.equals("[완료]\n")) break;
+            if (temp.equals("[취소]\n")) return null;
             if((temp + content).getBytes().length > 150) {
                 temp = "";
                 System.out.println("글자수 제한을 초과했습니다.");

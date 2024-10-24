@@ -22,15 +22,16 @@ public class PostViewDAO {
         try {
             conn = Common.getConnection();  // 오라클 DB 연결
             stmt = conn.createStatement();
-            String sql = "select * from VM_POST where POSTNO = '" + postNo + "';";
+            String sql = "select * from VM_POST where POSTNO = '" + postNo + "'";
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 post.setPostno(rs.getInt("POSTNO"));
                 post.setTitle(rs.getString("TITLE"));
-                post.setContent(rs.getString("CONTENT"));
+                post.setContent(rs.getString("PCONTENT"));
                 post.setAuthor(rs.getString("NNAME"));
                 post.setDate(rs.getString("PDATE"));
                 post.setCategory(rs.getString("CATE"));
+                post.setUserID(rs.getString("USERID"));
             }
         }catch (Exception e) {
             System.out.println(e + " 의 이유로 연결 실패");

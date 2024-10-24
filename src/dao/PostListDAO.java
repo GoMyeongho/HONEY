@@ -83,7 +83,7 @@ public class PostListDAO {
         return list;
     }
 
-    public final static String allSearch = "SELECT * FROM VM_POSTS_PAGE;";
+    public final static String allSearch = "SELECT * FROM VM_POSTS_PAGE";
 
 
 
