@@ -377,9 +377,7 @@ public class UsersDAO {
         return visiblePart + maskedPart;
     }
 
-    public List<UsersVO> selectUsersInfo() {
-        return List.of();
-    }
+
 }
 
 
