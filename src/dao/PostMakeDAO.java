@@ -28,6 +28,7 @@ public class PostMakeDAO {
             //psmt.setDate(5, vo.getDate());                    // DATE 또한 쿼리로 받기 때문에 필요 없음
             psmt.setString(4, vo.getCategory());    // 카테고리 입력값 데이터베이스 전달
             psmt.executeUpdate();   // SQL 쿼리 실행
+            System.out.println("글 작성을 완료 하였습니다.");
             return true;
         } catch (Exception e) {
             System.out.println("글 작성에 실패 하였습니다.");
