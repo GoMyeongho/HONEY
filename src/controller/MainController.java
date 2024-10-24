@@ -60,6 +60,7 @@ public class MainController {
                     while (true) {
                         name = loginPage();
                         if (name == null) {
+                            System.out.println("존재하지 않는 ID 이거나 비밀번호가 틀렸습니다.");
                             System.out.println("다시 시도하시겠습니까?");
                             System.out.println("[1] 네   [그외] 아니요");
                             if (sc.next().equals("1")) continue;

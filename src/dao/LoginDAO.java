@@ -23,7 +23,7 @@ public class LoginDAO {
             if (rs.getString("PASSWORD").equals(password)) return rs.getString("NNAME");
             else return null;
         }catch (Exception e) {
-            System.out.println(e + "의 이유로 연결 실패");
+            e.printStackTrace();
         }
         return null;
     }

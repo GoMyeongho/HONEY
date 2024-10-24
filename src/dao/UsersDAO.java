@@ -158,14 +158,15 @@ public class UsersDAO {
             System.out.println("질문에는 비밀번호가 포함되어 있으면 안되며 한글 기준 20자 이내로 입력 해 주세요.");
             System.out.print("질문 입력: ");
             pwLOCK = sc.next();
-            if (pwLOCK.length() <= 20) {
+            if (pwLOCK.length() >= 20) {
                 continue;
             } else {
                 System.out.print("질문 생성 조건을 확인 후 다시 입력 해 주세요.");
             }
             if(pwLOCK.contains(userPW)) {
-                break;
+                continue;
             }
+            break;
         }
         while (true) {
             System.out.println("질문에 대한 키워드를 입력 해 주세요");
@@ -178,8 +179,9 @@ public class UsersDAO {
                 continue;
             }
             if(pwKey.contains(userPW)) {
-                break;
+                continue;
             }
+            break;
         }
         String query = "INSERT INTO USERS (userID, userPW, nName, phone, updateDATE, pwLOCK, pwKey) " +
                 "VALUES (?, ?, ?, ?, SYSDATE, ?, ?)";
@@ -191,8 +193,8 @@ public class UsersDAO {
             psmt.setString(2, userPW);
             psmt.setString(3, nName);
             psmt.setString(4, phone);
-            psmt.setString(6, pwLOCK);
-            psmt.setString(7, pwKey);
+            psmt.setString(5, pwLOCK);
+            psmt.setString(6, pwKey);
             int ret = stmt.executeUpdate(query);
             System.out.println("Return: " + ret);
 
