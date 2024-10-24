@@ -44,7 +44,7 @@ public class UsersDAO {
                 Common.close(stmt);
                 Common.close(conn);
             }
-            if (userID.length() >= 8 && userID.length() <= 16) {
+            if (userID.getBytes().length >= 8 && userID.getBytes().length <= 16) {
 
             } else {
                 System.out.println("아이디 생성 조건을 다시 확인 후 입력 해 주세요.");
@@ -69,7 +69,7 @@ public class UsersDAO {
                 System.out.println("비밀번호 생성 조건을 다시 확인 후 입력 해 주세요.");
                 continue;
             }
-            if (userPW.length() >= 8 && userPW.length() <= 16) {
+            if (userPW.getBytes().length >= 8 && userPW.getBytes().length <= 16) {
                 break;
             } else {
                 System.out.println("비밀번호 생성 조건을 다시 확인 후 입력 해 주세요.");
@@ -103,7 +103,7 @@ public class UsersDAO {
                 Common.close(stmt);
                 Common.close(conn);
             }
-            if (nName.length() <= 8) {  // 바이트 기준
+            if (nName.getBytes().length <= 24) {  // 바이트 기준
             } else {
                 System.out.println("닉네임 생성 조건을 다시 확인 후 입력 해 주세요.");
                 continue;
@@ -138,7 +138,7 @@ public class UsersDAO {
                 Common.close(stmt);
                 Common.close(conn);
             }
-            if (phone.length() == 13) {
+            if (phone.getBytes().length == 13) {
             } else {
                 System.out.print("전화번호를 확인 후 다시 입력 해 주세요");
                 continue;
@@ -158,7 +158,7 @@ public class UsersDAO {
             System.out.println("질문에는 비밀번호가 포함되어 있으면 안되며 한글 기준 20자 이내로 입력 해 주세요.");
             System.out.print("질문 입력: ");
             pwLOCK = sc.next();
-            if (pwLOCK.length() >= 20) {
+            if (pwLOCK.getBytes().length >= 60) {
                 continue;
             } else {
                 System.out.print("질문 생성 조건을 확인 후 다시 입력 해 주세요.");
@@ -173,7 +173,7 @@ public class UsersDAO {
             System.out.println("키워드는 한글 기준 8자 이내로 입력 해 주세요");
             System.out.print("키워드: ");
             pwKey = sc.next();
-            if (pwKey.length() <= 8) {
+            if (pwKey.getBytes().length <= 24) {
             } else {
                 System.out.print("키워드 생성 조건을 확인 후 다시 입력 해 주세요.");
                 continue;
@@ -233,7 +233,7 @@ public class UsersDAO {
             System.out.print("전화번호: ");
             phone = inputPhone();
 
-            if (phone.length() == 13) {
+            if (phone.getBytes().length == 13) {
             } else {
                 System.out.print("전화번호 입력 조건을 확인 후 다시 입력 해 주세요.");
                 continue;
@@ -293,7 +293,7 @@ public class UsersDAO {
                 return;
             }
 
-            if (userID.length() >= 8 && userID.length() <= 16) {
+            if (userID.getBytes().length >= 8 && userID.getBytes().length <= 16) {
             } else {
                 System.out.println("아이디 입력 조건을 다시 확인 해 주세요");
                 continue;
@@ -323,7 +323,7 @@ public class UsersDAO {
             System.out.println("키워드를 입력 해 주세요. 키워드는 한글 기준 8자 이하 입니다.");
             System.out.print("키워드: ");
             pwKey = sc.next();
-            if (pwKey.length() <= 8) {
+            if (pwKey.getBytes().length <= 24) {
 
             } else {
                 System.out.println("키워드 입력 조건을 다시 확인 해 주세요");
