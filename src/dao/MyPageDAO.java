@@ -192,7 +192,7 @@ public class MyPageDAO {
                 conn = Common.getConnection(); // 메소드를 호출하여 데이터베이스 연결을 얻습니다.
                 pstmt = conn.prepareStatement(sql); // 미리 준비된 SQL문 실행을 위해서 prepareStatement 객체를 생성, 쿼리의 ? 자리에 실제 값들을 나중에 바인딩할 수 있게 해줍니다.
                 // 각 ? 자리에, 해당 변수 값을 순서대로 설정합니다.
-                pstmt.setString(1, nName);  // 닉네임을 쿼리에 바인딩
+                pstmt.setString(1, nName);  // 닉네임을 쿼리에 바인딩(첫번째 ?에 nName을 바인딩)
                 pstmt.setString(2, phone);  // 전화번호를 쿼리에 바인딩
                 pstmt.setString(3, pwLOCK); // PW_LOCK를 쿼리에 바인딩
                 pstmt.setString(4, pwKEY);  // PW_KEY를 쿼리에 바인딩
