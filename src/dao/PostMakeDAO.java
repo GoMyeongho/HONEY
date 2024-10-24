@@ -17,7 +17,7 @@ public class PostMakeDAO {
 
     public boolean postInsert(PostsVO vo) { // 글 작성시 쿼리 포맷
         // 글 작성 할때 시간이 자동으로 적용 되므로 쿼리 내에 SYSDATE 로 대체후 CATE 부분을 앞당겨서 입력 받음
-        String sql = "insert into posts (postno, title, userid, pcontent, pdate, cate) values(seq_postno.nextval, ?, ?, ?, sysdate, ?);";
+        String sql = "insert into posts (POSTNO, TITLE, USERID, PCONTENT, PDATE, CATE) values(seq_postno.nextval, ?, ?, ?, sysdate, ?)";
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
@@ -25,7 +25,6 @@ public class PostMakeDAO {
             psmt.setString(2, vo.getUserID());      // 글쓴이 ID 입력값 데이터베이스 전달
             psmt.setString(3, vo.getContent());     // 글 본문 입력값 데이터베이스 전달
             psmt.setString(4, vo.getCategory());    // 카테고리 입력값 데이터베이스 전달
-            System.out.println(vo.getUserID() + "/" + vo.getTitle() + "/" + vo.getCategory() + "/" + vo.getContent());
             psmt.executeUpdate();   // SQL 쿼리 실행
             System.out.println("글 작성을 완료 하였습니다.");
             return true;

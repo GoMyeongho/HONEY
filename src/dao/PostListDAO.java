@@ -26,12 +26,12 @@ public class PostListDAO {
     public List<PostsVO> selectPage(String value, int sel) {
         List<PostsVO> list = new ArrayList<PostsVO>();
 
-        String[] sql = {"SELECT * From VM_POSTS_PAGE WHERE NNAME LIKE ?;",
-                "SELECT * From VM_POSTS_PAGE WHERE NNAME = ?;",
-                "SELECT * From VM_POSTS_PAGE WHERE TITLE LIKE ?;",
-                "SELECT * From VM_POSTS_PAGE WHERE CATE = ?;",
+        String[] sql = {"SELECT * From VM_POSTS_PAGE WHERE NNAME LIKE ?",
+                "SELECT * From VM_POSTS_PAGE WHERE NNAME = ?",
+                "SELECT * From VM_POSTS_PAGE WHERE TITLE LIKE ?",
+                "SELECT * From VM_POSTS_PAGE WHERE CATE = ?",
                 "SELECT * From VM_POSTS_PAGE WHERE POSTNO IN " +
-                        "(SELECT POSTNO FROM LIKES WHERE NNAME = ?);",
+                        "(SELECT POSTNO FROM LIKES WHERE NNAME = ?)",
                 "SELECT vpp.POSTNO as POSTNO, TITLE, CATE, PDATE, c.NNAME as NNAME FROM VM_POST_PAGE vpp " +
                         "JOIN COMMENTS c ON vpp.POSTNO = c.POSTNO WHERE NNAME = ?"
         };

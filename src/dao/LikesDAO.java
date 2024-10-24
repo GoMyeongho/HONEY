@@ -23,7 +23,7 @@ public class LikesDAO {
 
     public HashSet<LikesVO> likeSet (String nName, String id) {
         HashSet<LikesVO> set = new HashSet<>();
-        String sql = "SELECT POSTNO FROM VM_LIKE WHERE NNAME = ?;";
+        String sql = "SELECT POSTNO FROM VM_LIKE WHERE NNAME = ?";
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
@@ -38,7 +38,7 @@ public class LikesDAO {
 
     public HashSet<LikesVO> likeSet (int postNo) {
         HashSet<LikesVO> set = new HashSet<>();
-        String sql = "SELECT USERID FROM VM_LIKE WHERE POSTNO = ?;";
+        String sql = "SELECT USERID FROM VM_LIKE WHERE POSTNO = ?";
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
@@ -70,7 +70,7 @@ public class LikesDAO {
     }
 
     public void cancelLike(int postNo, String userId) {
-        String sql = "DELETE FROM LIKES WHERE USERID = ? AND POSTNO = ?;";
+        String sql = "DELETE FROM LIKES WHERE USERID = ? AND POSTNO = ?";
 
         try {
             conn = Common.getConnection();
@@ -86,7 +86,7 @@ public class LikesDAO {
         Common.close(conn);
     }
     public void addLike(int postNo, String userId) {
-        String sql = "INSERT INTO LIKES (USERID, POSTNO) VALUES (?, ?);";
+        String sql = "INSERT INTO LIKES (USERID, POSTNO) VALUES (?, ?)";
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);

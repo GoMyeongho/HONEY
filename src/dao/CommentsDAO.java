@@ -28,7 +28,7 @@ public class CommentsDAO {
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM VM_COMM WHERE POSTNO = '"+ postNo + "';");
+            rs = stmt.executeQuery("SELECT * FROM VM_COMM WHERE POSTNO = '"+ postNo + "'");
             while (rs.next()) {
                 int commNo = rs.getInt("COMMNO");
                 int subNo = rs.getInt("SUBNO");
@@ -49,7 +49,7 @@ public class CommentsDAO {
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM VM_COMM WHERE NNAME = '"+ author + "';");
+            rs = stmt.executeQuery("SELECT * FROM VM_COMM WHERE NNAME = '"+ author + "'");
             while (rs.next()) {
                 int commNo = rs.getInt("COMMNO");
                 int subNo = rs.getInt("SUBNO");
