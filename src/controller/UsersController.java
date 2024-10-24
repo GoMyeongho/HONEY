@@ -15,10 +15,10 @@ public class UsersController {
     public void mainMenu() {    // 이름 변경 필요
         while (true) {
             System.out.println("===== 메뉴 =====");
-            System.out.println("1. 회원가입");
-            System.out.println("2. 아이디 찾기");
-            System.out.println("3. 비밀번호 찾기");
-            System.out.println("4. 종료");
+            System.out.println("[1] 회원가입");
+            System.out.println("[2] 아이디 찾기");
+            System.out.println("[3] 비밀번호 찾기");
+            System.out.println("[4] 종료");
             System.out.print("메뉴를 선택하세요: ");
 
             int choice = scanner.nextInt();

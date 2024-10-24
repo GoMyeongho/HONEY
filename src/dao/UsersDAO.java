@@ -21,14 +21,14 @@ public class UsersDAO {
 
 // !!!!!회원가입----------------------------------------------------------------------------------
     public void joinMember() {
-        String userPW, userID, nName, phone, pwLOCK, pwKey;
+        String userPW="", userID ="", nName, phone ="", pwLOCK, pwKey;
     // 아이디 생성
         while (true) {
             System.out.println("아이디는 8자 이상 16자 이하의 영문 및 숫자이어야 합니다. (중복 불가능)");
             System.out.print("아이디: ");
-            userID = noKor();
             List<String> IDList = new ArrayList<>();
             try {
+                userID = noKor();
                 conn = Common.getConnection();  // 오라클 DB 연결
                 stmt = conn.createStatement();
                 rs = stmt.executeQuery("SELECT USERID FROM VM_LOGIN");
@@ -38,6 +38,7 @@ public class UsersDAO {
                 }
             } catch (Exception e){
                 System.out.println(e + " 연결 실패");
+                continue;
             } finally {
                 Common.close(rs);
                 Common.close(stmt);
@@ -64,6 +65,10 @@ public class UsersDAO {
             System.out.println("비밀번호는 특수문자 및 영문 대소문자가 모두 포함되어야 합니다.");
             System.out.print("비밀번호: ");
             userPW = noKor();
+            if (userPW == null) {
+                System.out.println("비밀번호 생성 조건을 다시 확인 후 입력 해 주세요.");
+                continue;
+            }
             if (userPW.length() >= 8 && userPW.length() <= 16) {
                 break;
             } else {
@@ -86,7 +91,7 @@ public class UsersDAO {
             try {
                 conn = Common.getConnection();  // 오라클 DB 연결
                 stmt = conn.createStatement();
-                rs = stmt.executeQuery("SELECT USERID FROM NNAME");
+                rs = stmt.executeQuery("SELECT NNAME FROM USERS");
                 while(rs.next()){
                     String NName = rs.getString("NNAME");
                     nNameList.add(NName);
