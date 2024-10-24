@@ -67,7 +67,7 @@ public class MainController {
                             break;
                         }
                     }
-                    if (name != null) return false;
+                    if (name == null) return false;
                     return true;
                 case "2":
                     uCon.JoinUser();
@@ -88,10 +88,10 @@ public class MainController {
     }
     public String loginPage(){
         String PW;
-        System.out.println("아이디를 입력하세요 :");
+        System.out.print("아이디를 입력하세요 :");
         ID = sc.next();
         sc.nextLine();
-        System.out.println("비밀번호를 입력하세요 :");
+        System.out.print("비밀번호를 입력하세요 :");
         PW = sc.next();
         sc.nextLine();
         return new LoginDAO().login(ID,PW);

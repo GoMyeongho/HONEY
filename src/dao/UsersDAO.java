@@ -183,7 +183,7 @@ public class UsersDAO {
             }
             break;
         }
-        String query = "INSERT INTO USERS (userID, userPW, nName, phone, updateDATE, pwLOCK, pwKey) " +
+        String query = "INSERT INTO USERS (userID, userPW, nName, phone, UDATE, pwLOCK, pwKey) " +
                 "VALUES (?, ?, ?, ?, SYSDATE, ?, ?)";
 
         try {
