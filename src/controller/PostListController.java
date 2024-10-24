@@ -59,7 +59,7 @@ public class PostListController {
                     }
                 });
                 String catelist = "";
-                for (int i = 1; i < category.size(); i++) catelist += "[" + i + 1 + "] " + category.get(i) + "  ";
+                for (int i = 1; i < category.size(); i++) catelist += "[" + i + "] " + category.get(i) + "  ";
                 catelist += "[0] " + category.get(0);
                 System.out.println("검색할 카테고리 입력");
                 System.out.print(catelist);

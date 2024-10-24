@@ -9,13 +9,14 @@ public class CommentsVO implements Comparable<CommentsVO> {
     private String nName;
     private String content;
     private Date cDate;
-    private BigDecimal commNo;
+    private int commNo;
+    private int subNo;
     // 댓글 보이는 순서를 위해 추가한 값
     // 날짜순으로 하지 않는 이유는 대댓글 기능을 위해서
 
     @Override
     public int compareTo(CommentsVO o) {
-        return this.commNo.compareTo(o.commNo);
+        return (this.commNo == o.commNo) ? this.subNo - o.subNo : this.commNo - o.commNo;
     }
 
     // 날짜는 SYSDATE 를 사용할 것이기 때문에
@@ -27,8 +28,9 @@ public class CommentsVO implements Comparable<CommentsVO> {
     }
 
     // 출력은 날짜도 해줘야 하기 때문에 생성자에 cDate 추가함
-    public CommentsVO(BigDecimal commNo, int postNo, String nName, String content, Date cDate) {
+    public CommentsVO(int commNo, int subNo, int postNo, String nName, String content, Date cDate) {
         this.commNo = commNo;
+        this.subNo = subNo;
         this.postNo = postNo;
         this.nName = nName;
         this.content = content;
@@ -71,11 +73,19 @@ public class CommentsVO implements Comparable<CommentsVO> {
         this.cDate = cDate;
     }
 
-    public BigDecimal getCommNo() {
+    public int getCommNo() {
         return commNo;
     }
 
-    public void setCommNo(BigDecimal commNo) {
+    public void setCommNo(int commNo) {
         this.commNo = commNo;
     }
+
+    public int getSubNo() {
+        return subNo;
+    }
+    public void setSubNo(int subNo) {
+        this.subNo = subNo;
+    }
+
 }
