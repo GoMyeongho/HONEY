@@ -36,10 +36,11 @@ public class LikesDAO {
 
     public HashSet<LikesVO> likeSet (int postNo) {
         HashSet<LikesVO> set = new HashSet<>();
+        String sql = "SELECT NNAME FROM LIKES WHERE POSTNO = ?;";
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT NNAME FROM LIKES WHERE POSTNO = "+ postNo + ";");
+            rs = stmt.executeQuery(sql);
             while (rs.next()) new LikesVO(postNo, rs.getString("NNAME"));
         }catch (Exception e) {
             System.out.println(e + "의 이유로 연결에 실패했습니다.");

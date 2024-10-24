@@ -121,7 +121,7 @@ public class UsersDAO {
         while (true) {
             System.out.println("전화번호를 입력 해 주세요(010-0000-0000, 형태로 하이픈을 포함하여 입력 해 주세요)");
             System.out.print("전화번호: ");
-            phone = inputPhone();
+            phone = sc.next();
             List<String> phonList = new ArrayList<>();
             try {
                 conn = Common.getConnection();  // 오라클 DB 연결
@@ -154,10 +154,11 @@ public class UsersDAO {
         }
         // 비밀번호 찾기 시 사용 할 질문 및 키워드
         while (true) {
+            sc.nextLine();
             System.out.println("비밀번호를 찾을 시 사용 할 질문을 입력 해 주세요");
             System.out.println("질문에는 비밀번호가 포함되어 있으면 안되며 한글 기준 20자 이내로 입력 해 주세요.");
             System.out.print("질문 입력: ");
-            pwLOCK = sc.next();
+            pwLOCK = sc.nextLine();
             if (pwLOCK.getBytes().length >= 60) {
                 continue;
             } else {
@@ -195,7 +196,7 @@ public class UsersDAO {
             psmt.setString(4, phone);
             psmt.setString(5, pwLOCK);
             psmt.setString(6, pwKey);
-            int ret = stmt.executeUpdate(query);
+            int ret = psmt.executeUpdate();
             System.out.println("Return: " + ret);
 
         } catch (SQLException e) {

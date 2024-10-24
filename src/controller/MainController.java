@@ -64,11 +64,15 @@ public class MainController {
                             System.out.println("다시 시도하시겠습니까?");
                             System.out.println("[1] 네   [그외] 아니요");
                             if (sc.next().equals("1")) continue;
-                            break;
+                            return false;
                         }
+                        System.out.println("=".repeat(60));
+                        System.out.println(name + "님의 로그인이 성공했습니다.");
+                        System.out.println("=".repeat(60));
+                        return true;
                     }
-                    if (name == null) return false;
-                    return true;
+
+
                 case "2":
                     uCon.JoinUser();
                     return false;
@@ -126,7 +130,6 @@ public class MainController {
             case "2":
                 System.out.println();
                 System.out.println("=".repeat(60));
-                mpCon.viewUserInfo(ID);
                 mpCon.showMenu();
                 return true;
             case "3":

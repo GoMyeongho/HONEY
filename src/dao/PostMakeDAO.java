@@ -17,7 +17,7 @@ public class PostMakeDAO {
 
     public boolean postInsert(PostsVO vo) { // 글 작성시 쿼리 포맷
         // 글 작성 할때 시간이 자동으로 적용 되므로 쿼리 내에 SYSDATE 로 대체후 CATE 부분을 앞당겨서 입력 받음
-        String sql = "INSERT INTO POSTS(POSTNO, TITLE, NNAME, PCONTERNT, PDATE, CATE) VALUES(POSTS_SEQ.NEXTVAL,?,?,?,SYSDATE,?)";
+        String sql = "INSERT INTO POSTS(POSTNO, TITLE, NNAME, PCONTENT, PDATE, CATE) VALUES(SEQ_POSTNO.NEXTVAL,?,?,?,SYSDATE,?)";
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
@@ -31,7 +31,7 @@ public class PostMakeDAO {
             System.out.println("글 작성을 완료 하였습니다.");
             return true;
         } catch (Exception e) {
-            System.out.println("글 작성에 실패 하였습니다.");
+            System.out.println(e + "글 작성에 실패 하였습니다.");
             return false;
         } finally { // psmt -> conn 순서로 데이터베이스 닫기
             Common.close(psmt);

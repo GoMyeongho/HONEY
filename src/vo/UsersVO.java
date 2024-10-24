@@ -27,6 +27,12 @@ public class UsersVO {
     public UsersVO() {}
 
     public UsersVO(String usersID, String usersPW, String nName, String phone, String pwLock, String pwKey) {
+        this.userID = usersID;
+        this.userPW = usersPW;
+        this.nName = nName;
+        this.phone = phone;
+        this.pwLOCK = pwLock;
+        this.pwKey = pwKey;
     }
 
     // getter

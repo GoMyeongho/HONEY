@@ -51,7 +51,7 @@ public class PostViewController {
         System.out.println();
 
         System.out.println("=".repeat(60));
-        for(int i = page * 8; i < page * 8 + 8; i++) {
+        for(int i = page * 8; i < Math.min(page * 8 + 8,cList.size()); i++) {
             String ans = (cList.get(i).getSubNo() == 1)
                     ? "" : "->";
             System.out.print(ans);

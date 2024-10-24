@@ -15,15 +15,16 @@ public class LoginDAO {
     }
 
     public String login(String ID, String password) {
+        String sql = "select * from VM_LOGIN where USERID = '" + ID + "'";
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM VM_LOGIN WHERE USERID = '"+ ID +"';");
+            rs = stmt.executeQuery(sql);
             rs.next();
-            if (rs.getString("PASSWORD").equals(password)) return rs.getString("NNAME");
+            if (rs.getString("USERPW").equals(password)) return rs.getString("NNAME");
             else return null;
         }catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
         return null;
     }
