@@ -39,11 +39,12 @@ public class LikesDAO {
         String sql = "SELECT NNAME FROM LIKES WHERE POSTNO = ?;";
         try {
             conn = Common.getConnection();
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, postNo);
+            rs = psmt.executeQuery();
             while (rs.next()) new LikesVO(postNo, rs.getString("NNAME"));
         }catch (Exception e) {
-            System.out.println(e + "의 이유로 연결에 실패했습니다.");
+            e.printStackTrace();
         }
         return set;
     }

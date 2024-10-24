@@ -22,7 +22,7 @@ public class PostViewDAO {
         try {
             conn = Common.getConnection();  // 오라클 DB 연결
             stmt = conn.createStatement();
-            String sql = "select * from POSTS where POSTNO = '" + postNo + "';";
+            String sql = "select * from VM_POST where POSTNO = '" + postNo + "';";
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 post.setPostno(rs.getInt("POSTNO"));

@@ -11,7 +11,7 @@ import java.util.*;
 
 public class PostListController {
     private int page;
-    private final static String[] listType = {"전체 글 보기", " 카테고리 검색 : ", "작성자 검색 : ", "제목 검색 : ", "내 글 보기", "좋아요한 글 보기"};
+    private final static String[] listType = {"전체 글 보기", " 카테고리 검색 : ", "작성자 검색 : ", "제목 검색 : ", "내 글 보기", "좋아요한 글 보기", "댓글 쓴 글 보기"};
     static List<String> category = new CategoryDAO().getCategories();
     private int postSel;
     private int maxPage;
@@ -50,7 +50,7 @@ public class PostListController {
         List<PostsVO> list;
         switch (sel) {
             case 0:
-                list = dao.selectPage(PostListDAO.allSearch);
+                list = dao.selectPage();
                 break;
             case 1:
                 Collections.sort(category, new Comparator<String>() {
@@ -68,7 +68,7 @@ public class PostListController {
                 System.out.print(catelist);
                 int choice = sc.nextInt();
                 if (choice < category.size() && choice >= 0) {
-                    list = dao.selectPage(dao.categorySearch(category.get(choice)));
+                    list = dao.selectPage(category.get(choice),3);
                 }
                 else{
                     System.out.println("잘못된 입력입니다.");
@@ -77,18 +77,20 @@ public class PostListController {
                 break;
             case 2:
                 System.out.println("검색할 작성자 이름 입력 : ");
-                list = dao.selectPage(dao.authorSearch(sc.next()));
+                list = dao.selectPage("%" + sc.next() + "%",0);
                 break;
             case 3:
                 System.out.println("검색할 글 제목 입력 : ");
-                list = dao.selectPage(dao.titleSearch(sc.next()));
+                list = dao.selectPage("%" + sc.next() + "%",2);
                 break;
             case 4:
-                list = dao.selectPage(dao.myPostsSearch(name));
+                list = dao.selectPage(name,1); // 본인이 쓴 글 검색
+                break;
+            case 5:
+                list = dao.selectPage(name, 4); //좋아요 검색
                 break;
             case 6:
-                list = dao.selectPage(dao.LikeSearch(name));
-                break;
+                list = dao.selectPage(name, 5); //댓글 검색
             default:
                 System.out.println("잘못된 코딩 입력입니다.");
                 return null;
