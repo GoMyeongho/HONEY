@@ -28,7 +28,7 @@ public class MyPageDAO {
             conn = Common.getConnection(); // 데이터 베이스에 연결
             String sql = "SELECT USER_ID, USER_PW, NNAME, PHONE, UPDATE_DATE, PW_LOCK, PW_KEY From USERS WHERE USER_ID = ?"; // 특정 USER_ID를 기준으로 사용자의 정보를 조회하는 쿼리
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, userID);
+            pstmt.setString(1, userID); // userID는 첫번째 ?인 1을 의미
             rs = pstmt.executeQuery();
             if (rs.next()){
                 String userPW = rs.getString("USER_PW"); // 비밀번호
@@ -44,6 +44,8 @@ public class MyPageDAO {
         } catch (Exception e) {
             e.getStackTrace();
         } finally {
+            // close() 메소드를 쓰는 이유 : 데이터베이스 자원을 안전하게 해제, 메모리 누수와 데이터베이스 연결부족을 방지하기 위함
+            // -> 시스템 자원을 효율적으로 관리하고, 코드의 재사용성과 가독성을 높일 수 있다.
             Common.close(rs);
             Common.close(pstmt);
             Common.close(conn);
