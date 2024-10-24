@@ -133,7 +133,7 @@ public class MainController {
                 mpCon.showMenu();
                 return true;
             case "3":
-                new PostMakeController().postMakeConsole();
+                new PostMakeController().postMakeConsole(name);
                 return true;
             case "9":
                 name = null;

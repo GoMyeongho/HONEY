@@ -12,7 +12,7 @@ public class PostMakeController {
     private final CategoryDAO categoryDAO = new CategoryDAO();
     Scanner sc = new Scanner(System.in);
 
-    public void postMakeConsole() {
+    public void postMakeConsole(String name) {
         boolean isRunning = true;
         PostsVO postsVO = new PostsVO();
 
@@ -34,7 +34,9 @@ public class PostMakeController {
             contentBuilder(postsVO);  // 글 내용 메뉴 호출 메서드
             System.out.println("작성된 글 내용:\n" + postsVO.getContent());
             break;
+
         }
+        postsVO.setAuthor(name);
         new PostMakeDAO().postInsert(postsVO);
     }
 

@@ -88,28 +88,3 @@ public class PostListDAO {
 
 
 }
-class Sql {
-    private String sql;
-    private String condition;
-
-    public Sql(String sql, String condition) {
-        this.sql = sql;
-        this.condition = condition;
-    }
-
-    public String getCondition() {
-        return condition;
-    }
-
-    public void setCondition(String condition) {
-        this.condition = condition;
-    }
-
-    public String getSql() {
-        return sql;
-    }
-
-    public void setSql(String sql) {
-        this.sql = sql;
-    }
-}
