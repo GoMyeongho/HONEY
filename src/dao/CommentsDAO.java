@@ -28,7 +28,7 @@ public class CommentsDAO {
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM COMMENTS WHERE POSTNO = '"+ postNo + "';");
+            rs = stmt.executeQuery("SELECT * FROM VM_COMM WHERE POSTNO = '"+ postNo + "';");
             while (rs.next()) {
                 int commNo = rs.getInt("COMMNO");
                 int subNo = rs.getInt("SUBNO");
@@ -49,7 +49,7 @@ public class CommentsDAO {
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM COMMENTS WHERE NNAME = '"+ author + "';");
+            rs = stmt.executeQuery("SELECT * FROM VM_COMM WHERE NNAME = '"+ author + "';");
             while (rs.next()) {
                 int commNo = rs.getInt("COMMNO");
                 int subNo = rs.getInt("SUBNO");
@@ -65,7 +65,7 @@ public class CommentsDAO {
     }
 
     public boolean addComment (CommentsVO vo) {
-            String sql = "INSERT INTO COMMENTS (COMMNO, SUBNO, POSTNO, NNAME, CCONTENT, CDATE) VALUES(?, ?, ?, ?, ?, SYSDATE)";
+            String sql = "INSERT INTO COMMENTS (COMMNO, SUBNO, POSTNO, USERID, CCONTENT, CDATE) VALUES(?, ?, ?, ?, ?, SYSDATE)";
             try {
                 conn = Common.getConnection();
                 psmt = conn.prepareStatement(sql);

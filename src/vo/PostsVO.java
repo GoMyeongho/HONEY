@@ -7,6 +7,7 @@ public class PostsVO implements Comparable<PostsVO>{
     private String author;
     private String date;
     private String category;
+    private String userID;
 
     @Override
     public int compareTo(PostsVO o) {
@@ -85,7 +86,15 @@ public class PostsVO implements Comparable<PostsVO>{
     public void setCategory(String category) {
         this.category = category;
     }
+
+    public String getUserID() {
+        return userID;
     }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+}
 
 
 

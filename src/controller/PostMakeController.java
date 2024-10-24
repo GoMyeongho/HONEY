@@ -12,7 +12,7 @@ public class PostMakeController {
     private final CategoryDAO categoryDAO = new CategoryDAO();
     Scanner sc = new Scanner(System.in);
 
-    public void postMakeConsole(String name) {
+    public void postMakeConsole(String name, String ID) {
         boolean isRunning = true;
         PostsVO postsVO = new PostsVO();
 
@@ -37,6 +37,7 @@ public class PostMakeController {
 
         }
         postsVO.setAuthor(name);
+        postsVO.setUserID(ID);
         new PostMakeDAO().postInsert(postsVO);
     }
 

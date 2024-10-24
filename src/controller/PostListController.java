@@ -20,14 +20,14 @@ public class PostListController {
 
     Scanner sc = null;
 
-    public PostListController(int sel, String name, PostListDAO dao) {
+    public PostListController(int sel, String name,String id, PostListDAO dao) {
         sc = new Scanner(System.in);
-        List<PostsVO> list = selectSearchOption(sel, name, dao);
+        List<PostsVO> list = selectSearchOption(sel, name, id, dao);
         while (true) {
             postSel = 0;
             page = 0;
             if (list != null && !list.isEmpty()) {
-                showSelections(list, sel, name, dao);
+                showSelections(list, sel, name, id, dao);
             } else {
                 System.out.println("페이지를 보이는데 실패했습니다");
                 System.out.println("다시 시도하시겠습니까?");
@@ -35,7 +35,7 @@ public class PostListController {
                 if (sc.next().equals("다시")) continue;
                 else break;
             }
-            while(inPageSet()) showSelections(list, sel, name, dao);
+            while(inPageSet()) showSelections(list, sel, name, id, dao);
             if (postSel > 0) {
                 postSel = list.get(postSel + page * 10 -1).getPostno();
                 new PostViewController(postSel, name);
@@ -46,7 +46,7 @@ public class PostListController {
         }
     }
 
-    public List<PostsVO> selectSearchOption(int sel, String name, PostListDAO dao) {
+    public List<PostsVO> selectSearchOption(int sel, String name,String id, PostListDAO dao) {
         List<PostsVO> list;
         switch (sel) {
             case 0:
@@ -98,14 +98,14 @@ public class PostListController {
         return list;
     }
 
-    public void showSelections(List<PostsVO> list, int sel, String name, PostListDAO dao) {
+    public void showSelections(List<PostsVO> list, int sel, String name,String id, PostListDAO dao) {
         Collections.sort(list);
         maxPage = list.size() / 10;
         System.out.println("=".repeat(60));
         System.out.println(" ".repeat(10) + listType[sel] + " | 페이지 번호 : " + page + 1);
         System.out.println("=".repeat(60));
         LikesDAO likes = new LikesDAO();
-        HashSet<LikesVO> likeSet = likes.likeSet(name);
+        HashSet<LikesVO> likeSet = likes.likeSet(name, id);
         for (int i = page * 10; i < Math.min(page * 10 + 10, list.size()); i++) {
             System.out.println("-".repeat(60));
             System.out.println("[" + (i % 10 + 1) + "] " + list.get(i).getCategory() + " | " + list.get(i).getTitle() + " | "

@@ -21,13 +21,15 @@ public class LikesDAO {
         sc = new Scanner(System.in);
     }
 
-    public HashSet<LikesVO> likeSet (String nName) {
+    public HashSet<LikesVO> likeSet (String nName, String id) {
         HashSet<LikesVO> set = new HashSet<>();
+        String sql = "SELECT POSTNO FROM VM_LIKE WHERE NNAME = ?;";
         try {
             conn = Common.getConnection();
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT POSTNO FROM LIKES WHERE NNAME = '"+ nName + "';");
-            while (rs.next()) new LikesVO(rs.getInt("POSTNO"),nName);
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1, nName);
+            rs = psmt.executeQuery();
+            while (rs.next()) new LikesVO(rs.getInt("POSTNO"),nName,id);
         }catch (Exception e) {
             System.out.println(e + "의 이유로 연결에 실패했습니다.");
         }
@@ -36,13 +38,13 @@ public class LikesDAO {
 
     public HashSet<LikesVO> likeSet (int postNo) {
         HashSet<LikesVO> set = new HashSet<>();
-        String sql = "SELECT NNAME FROM LIKES WHERE POSTNO = ?;";
+        String sql = "SELECT USERID FROM VM_LIKE WHERE POSTNO = ?;";
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
             psmt.setInt(1, postNo);
             rs = psmt.executeQuery();
-            while (rs.next()) new LikesVO(postNo, rs.getString("NNAME"));
+            while (rs.next()) new LikesVO(postNo, rs.getString("NNAME"), rs.getString("USERID"));
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,7 +53,7 @@ public class LikesDAO {
 
     public boolean isLike(HashSet<LikesVO> set, String nName) {
         for (LikesVO vo : set) {
-            if (vo.getnName() == nName) {
+            if (vo.getnName().equals(nName)) {
                 return true;
             }
         }
@@ -67,13 +69,13 @@ public class LikesDAO {
         return heart[0];
     }
 
-    public void cancelLike(int postNo, String nName) {
-        String sql = "DELETE FROM LIKES WHERE NNAME = ? AND POSTNO = ?;";
+    public void cancelLike(int postNo, String userId) {
+        String sql = "DELETE FROM LIKES WHERE USERID = ? AND POSTNO = ?;";
 
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
-            psmt.setString(1, nName);
+            psmt.setString(1, userId);
             psmt.setInt(2, postNo);
             psmt.executeUpdate();
 
@@ -83,12 +85,12 @@ public class LikesDAO {
         Common.close(psmt);
         Common.close(conn);
     }
-    public void addLike(int postNo, String nName) {
-        String sql = "INSERT INTO LIKES (NNAME, POSTNO) VALUES (?, ?);";
+    public void addLike(int postNo, String userId) {
+        String sql = "INSERT INTO LIKES (USERID, POSTNO) VALUES (?, ?);";
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
-            psmt.setString(1, nName);
+            psmt.setString(1, userId);
             psmt.setInt(2, postNo);
             psmt.executeUpdate();
 

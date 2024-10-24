@@ -3,10 +3,12 @@ package vo;
 public class LikesVO {
     private int postNo;
     private String nName;
+    private String id;
 
-    public LikesVO(int postNo, String nName) {
+    public LikesVO(int postNo, String nName, String id) {
         this.postNo = postNo;
         this.nName = nName;
+        this.id = id;
     }
 
 
@@ -28,4 +30,11 @@ public class LikesVO {
         this.nName = nName;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
