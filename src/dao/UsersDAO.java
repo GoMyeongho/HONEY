@@ -1,6 +1,8 @@
 package dao;
 
 import common.Common;
+import vo.UsersVO;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -366,6 +368,10 @@ public class UsersDAO {
         String maskedPart = "*".repeat(userID.length() - 4);
         // 앞 4자를 제외한 문구는 *로 표기
         return visiblePart + maskedPart;
+    }
+
+    public List<UsersVO> selectUsersInfo() {
+        return List.of();
     }
 }
 
