@@ -26,6 +26,9 @@ public class UsersVO {
     // 빈 생성자
     public UsersVO() {}
 
+    public UsersVO(String usersID, String usersPW, String nName, String phone, String pwLock, String pwKey) {
+    }
+
     // getter
     public String getUserID() {
         return userID;
@@ -35,7 +38,7 @@ public class UsersVO {
         return userPW;
     }
 
-    public String getnName() {
+    public String getNName() {
         return nName;
     }
 
@@ -64,7 +67,7 @@ public class UsersVO {
         this.userPW = userPW;
     }
 
-    public void setnName(String nName) {
+    public void setNName(String nName) {
         this.nName = nName;
     }
 
