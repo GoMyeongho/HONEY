@@ -14,18 +14,19 @@ public class MyPageDAO {
     Connection conn = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
+
     Scanner sc = new Scanner(System.in);
     UsersDAO uDao = new UsersDAO();
 
-    ///////////////////////////////// 내 정보 보기 관련 메소드 ////////////////////////////
+    ///////////////////////////////// 내 정보 관련 메소드 /////////////////////////////////
 
-    // 회원 정보 조회
+    // 회원정보 조회
     // 현재 로그인 된 회원 정보를 불러와서 UsersVO 객체에 담아주는 메소드
     public UsersVO currUserInfo(String userID) {
         UsersVO currUser = null;
         try {
-            conn = Common.getConnection();
-            String sql = "SELECT USER_ID, USER_PW, NNAME, PHONE, UPDATE_DATE, PW_LOCK, PW_KEY From USERS WHERE USER_ID = ?";
+            conn = Common.getConnection(); // 데이터 베이스에 연결
+            String sql = "SELECT USER_ID, USER_PW, NNAME, PHONE, UPDATE_DATE, PW_LOCK, PW_KEY From USERS WHERE USER_ID = ?"; // 특정 USER_ID를 기준으로 사용자의 정보를 조회하는 쿼리
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, userID);
             rs = pstmt.executeQuery();
@@ -76,10 +77,13 @@ public class MyPageDAO {
             userPW = sc.next();
 
             Pattern passPattern1 = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\\\d)(?=.*\\\\W).{8,20}$");
-            // 영어 대문자 또는 소문자가 최소 한 번 포함되어야 함
-            // 숫자가 최소 한 번 포함되어야 함
-            // 특수 문자가 최소 한 번 포함되어야 함
-            // 전체 길이가 8자 이상 20자 이하이어야 함
+            // 정규식표현(비밀번호)
+            // ^문자열 : 특정 문자열로 시작(시작점)
+            // (?=.*[a-zA-Z]) : 영어 대문자 또는 소문자가 최소 한 번 포함되어야 함
+            // (?=.*\\d) : 숫자가 최소 한 번 포함되어야 함
+            // (?=.*\\W) : 특수 문자가 최소 한 번 포함되어야 함
+            // .{8,20} : 전체 길이가 8자 이상 20자 이하이어야 함
+            // 문자열$ : 특정 문자열로 끝남(종착점)
             Matcher passMatcher1 = passPattern1.matcher(userPW);
 
             if(userPW.equalsIgnoreCase("no")) break;
@@ -177,26 +181,29 @@ public class MyPageDAO {
             else if (pwKEY.length() > 8) System.out.println("제시어 답은 8자 이하 입력해주세요.");
             else break;
         }
-        
-        // SQL
+
+        ///////////////////////////////// SQL 쿼리문 /////////////////////////////////
 
         String sql = "";
-        if (userPW.equalsIgnoreCase("no")) { // 비밀번호 수정 안하는 경우
-            sql = "UPDATE USERS SET NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?";
+        // 1. 비밀번호를 수정하지 않는 경우
+        if (userPW.equalsIgnoreCase("no")) {
+            sql = "UPDATE USERS SET NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?"; // 비밀번호를 제외한 사용자 정보를 업데이트하는 SQL쿼리
             try {
-                conn = Common.getConnection();
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, nName);
-                pstmt.setString(2, phone);
-                pstmt.setString(3, pwLOCK);
-                pstmt.setString(4, pwKEY);
-                pstmt.setString(5, userID);
-                pstmt.executeUpdate();
+                conn = Common.getConnection(); // 메소드를 호출하여 데이터베이스 연결을 얻습니다.
+                pstmt = conn.prepareStatement(sql); // 미리 준비된 SQL문 실행을 위해서 prepareStatement 객체를 생성, 쿼리의 ? 자리에 실제 값들을 나중에 바인딩할 수 있게 해줍니다.
+                // 각 ? 자리에, 해당 변수 값을 순서대로 설정합니다.
+                pstmt.setString(1, nName);  // 닉네임을 쿼리에 바인딩
+                pstmt.setString(2, phone);  // 전화번호를 쿼리에 바인딩
+                pstmt.setString(3, pwLOCK); // PW_LOCK를 쿼리에 바인딩
+                pstmt.setString(4, pwKEY);  // PW_KEY를 쿼리에 바인딩
+                pstmt.setString(5, userID); // USER_ID을 쿼리에 바인딩
+                pstmt.executeUpdate(); // 쿼리를 실행하고 데이터베이스에 업데이트를 적용
             } catch (Exception e) {
                 e.getStackTrace();
             }
-        } else { // 비밀번호 수정하는 경우
-            sql = "UPDATE USERS SET USER_PW = ?, NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?";
+        } else {
+        // 2. 비밀번호를 수정하는 경우
+            sql = "UPDATE USERS SET USER_PW = ?, NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?"; // 비밀번호를 포함하여 모든 사용자 정보를 업데이트하는 SQL쿼리
             try{
                 conn = Common.getConnection();
                 pstmt = conn.prepareStatement(sql);
@@ -206,7 +213,7 @@ public class MyPageDAO {
                 pstmt.setString(4, pwLOCK);
                 pstmt.setString(5, pwKEY);
                 pstmt.setString(6, userID);
-                pstmt.executeUpdate();
+                pstmt.executeUpdate(); // 쿼리를 실행하고 데이터베이스에 업데이트를 적용
             } catch (Exception e) {
                 e.getStackTrace();
             }
