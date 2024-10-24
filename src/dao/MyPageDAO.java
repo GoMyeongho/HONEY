@@ -1,7 +1,6 @@
 package dao;
 
 import common.Common;
-import vo.PostsVO;
 import vo.UsersVO;
 
 import java.sql.*;
@@ -30,17 +29,17 @@ public class MyPageDAO {
         UsersVO currUser = null;
         try {
             conn = Common.getConnection(); // 데이터 베이스에 연결
-            String sql = "SELECT USER_ID, USER_PW, NNAME, PHONE, UPDATE_DATE, PW_LOCK, PW_KEY From USERS WHERE USER_ID = ?"; // 특정 USER_ID를 기준으로 사용자의 정보를 조회하는 쿼리
+            String sql = "SELECT USERID, USERPW, NNAME, PHONE, UDATE, PWLOCK, PWKEY From USERS WHERE USERID = ?"; // 특정 USER_ID를 기준으로 사용자의 정보를 조회하는 쿼리
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, userID); // userID는 첫번째 ?인 1을 의미
             rs = pstmt.executeQuery();
             if (rs.next()){
-                String userPW = rs.getString("USER_PW"); // 비밀번호
+                String userPW = rs.getString("USERPW"); // 비밀번호
                 String nName = rs.getString("NNAME"); // 닉네임
                 String phone = rs.getString("PHONE"); // 휴대폰번호
-                Date updateDATE = rs.getDate("UPDATE_DATE"); // 가입날짜
-                String pwLOCK = rs.getString("PW_LOCK"); // 제시어 문제
-                String pwKey = rs.getString("PW_KEY"); // 제시어 답
+                Date updateDATE = rs.getDate("UDATE"); // 가입날짜
+                String pwLOCK = rs.getString("PWLOCK"); // 제시문
+                String pwKey = rs.getString("PWKEY"); // 제시어
 
                 currUser = new UsersVO(userID, userPW, nName, phone, updateDATE, pwLOCK, pwKey);
 
@@ -65,9 +64,10 @@ public class MyPageDAO {
         System.out.println("아이디 : " + cui.getUserID());
         System.out.println("비밀번호 : " + cui.getUserPW());
         System.out.println("닉네임 : " + cui.getNName());
-        System.out.println("휴대폰번호 : " + cui.getUpdateDATE());
-        System.out.println("제시어 : " + cui.getPwLOCK());
-        System.out.println("제시어 답 : " + cui.getPwKey());
+        System.out.println("휴대폰번호 : " + cui.getPhone());
+        System.out.println("가입 날짜 : " + cui.getUpdateDATE());
+        System.out.println("제시문 : " + cui.getPwLOCK());
+        System.out.println("제시어 : " + cui.getPwKey());
         System.out.println("=".repeat(24));
     }
 
@@ -149,42 +149,29 @@ public class MyPageDAO {
             else break;
         }
 
-        // 수정할 제시어 문제 입력
+        // 수정할 제시문 입력
         String pwLOCK = "";
         while (true) {
-            System.out.println("변경할 제시어를 입력하세요 (기존 제시어 유지는 no 입력) : ");
+            System.out.println("변경할 제시문를 입력하세요 (기존 제시문 유지는 no 입력) : ");
             pwLOCK = sc.next();
             String check = pwLOCK;
 
             int intL = pwLOCK.getBytes().length;
 
-            //중복 체크
-            if (uv1.stream().filter(n -> check.equals(n.getPwLOCK())).findAny().orElse(null) !=null) {
-                System.out.println("이미 사용중인 제시어입니다.");
-            } else if (pwLOCK.equalsIgnoreCase("no")) {
-                pwLOCK = cui.getPwLOCK();
-                break;
-            }
-            else if (intL < 8) System.out.println("제시어는 8자 이상으로 입력해주세요.");
-            else if (intL > 20) System.out.print("제시어는 20자 이하로 입력해주세요.");
+            if (intL < 8) System.out.println("제시문는 8자 이상으로 입력해주세요.");
+            else if (intL > 20) System.out.print("제시문는 20자 이하로 입력해주세요.");
             else break;
         }
 
-        // 수정할 제시어 답 입력
+        // 수정할 제시어 입력
         String pwKEY = "";
         while (true) {
-            System.out.println("변경할 제시어 답을 입력하세요 (기존 제시어 답 유지는 no 입력) : ");
+            System.out.println("변경할 제시어를 입력하세요 (기존 제시어 유지는 no 입력) : ");
             pwKEY = sc.next();
             String check = pwKEY;
 
-            //중복체크
-            if (uv1.stream().filter(n -> check.equals(n.getPwKey())).findAny().orElse(null) !=null) {
-                System.out.println("이미 사용중인 제시어 답입니다.");
-            } else if (pwKEY.equalsIgnoreCase("no")) {
-                pwKEY = cui.getPwKey();
-                break;
-            }
-            else if (pwKEY.length() > 8) System.out.println("제시어 답은 8자 이하 입력해주세요.");
+
+            if (pwKEY.length() > 8) System.out.println("제시어는 8자 이하 입력해주세요.");
             else break;
         }
 
@@ -193,7 +180,7 @@ public class MyPageDAO {
         String sql = "";
         // 1. 비밀번호를 수정하지 않는 경우
         if (userPW.equalsIgnoreCase("no")) {
-            sql = "UPDATE USERS SET NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?"; // 비밀번호를 제외한 사용자 정보를 업데이트하는 SQL쿼리
+            sql = "UPDATE USERS SET NNAME=?, PHONE=?, PWLOCK=?, PWKey=? WHERE USERID = ?"; // 비밀번호를 제외한 사용자 정보를 업데이트하는 SQL쿼리
             try {
                 conn = Common.getConnection(); // 메소드를 호출하여 데이터베이스 연결을 얻습니다.
                 pstmt = conn.prepareStatement(sql); // 미리 준비된 SQL문 실행을 위해서 prepareStatement 객체를 생성, 쿼리의 ? 자리에 실제 값들을 나중에 바인딩할 수 있게 해줍니다.
@@ -209,7 +196,7 @@ public class MyPageDAO {
             }
         } else {
         // 2. 비밀번호를 수정하는 경우
-            sql = "UPDATE USERS SET USER_PW = ?, NNAME=?, PHONE=?, PW_LOCK=?, PW_Key=? WHERE USER_ID = ?"; // 비밀번호를 포함하여 모든 사용자 정보를 업데이트하는 SQL쿼리
+            sql = "UPDATE USERS SET USERPW = ?, NNAME=?, PHONE=?, PWLOCK=?, PWKey=? WHERE USERID = ?"; // 비밀번호를 포함하여 모든 사용자 정보를 업데이트하는 SQL쿼리
             try{
                 conn = Common.getConnection();
                 pstmt = conn.prepareStatement(sql);
@@ -236,12 +223,12 @@ public class MyPageDAO {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                String usersID = rs.getString("USERS_ID");
-                String usersPW = rs.getString("USER_PW");
+                String usersID = rs.getString("USERID");
+                String usersPW = rs.getString("USERPW");
                 String nName = rs.getString("NNAME");
                 String phone = rs.getString("PHONE");
-                String pwLock = rs.getString("PW_LOCK");
-                String pwKey = rs.getString("PW_KEY");
+                String pwLock = rs.getString("PWLOCK");
+                String pwKey = rs.getString("PWKEY");
                 UsersVO vo = new UsersVO(usersID,usersPW, nName, phone, pwLock, pwKey);
                 list.add(vo);
             }
