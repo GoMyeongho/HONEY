@@ -190,7 +190,7 @@ public class UsersDAO {
             System.out.println("Return: " + ret);
 
         } catch (SQLException e) {
-            System.out.println("회원가입에 실패하였습니다.");
+            System.out.println(e + "회원가입에 실패하였습니다.");
         }
         Common.close(psmt);
         Common.close(conn);
