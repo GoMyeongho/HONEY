@@ -133,7 +133,7 @@ public class MainController {
                 mpCon.showMenu();
                 return true;
             case "3":
-                new PostMakeController().postMakeConsole();
+                new PostMakeController().postMakeConsole(name,ID);
                 return true;
             case "9":
                 name = null;
@@ -157,10 +157,10 @@ public class MainController {
             String sel = sc.next();
             switch (sel) {
                 case "1":
-                    new PostListController(0,name, new PostListDAO());
+                    new PostListController(0,name, ID, new PostListDAO());
                     break;
                 case "2":
-                    new PostListController(1,name, new PostListDAO());
+                    new PostListController(1,name, ID, new PostListDAO());
                     break;
                 case "3":
                     System.out.println("[1] 제목 검색  [2] 닉네임 검색  [0] 나가기");
@@ -168,10 +168,10 @@ public class MainController {
                         sel = sc.next();
                         switch (sel) {
                             case "1":
-                                new PostListController(3,name, new PostListDAO());
+                                new PostListController(3,name, ID, new PostListDAO());
                                 break;
                             case "2":
-                                new PostListController(2,name, new PostListDAO());
+                                new PostListController(2,name, ID, new PostListDAO());
                                 break;
                             case "0":
                                 return true;

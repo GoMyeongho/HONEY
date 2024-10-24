@@ -11,7 +11,7 @@ import java.util.*;
 
 public class PostListController {
     private int page;
-    private final static String[] listType = {"전체 글 보기", " 카테고리 검색 : ", "작성자 검색 : ", "제목 검색 : ", "내 글 보기", "좋아요한 글 보기"};
+    private final static String[] listType = {"전체 글 보기", " 카테고리 검색 : ", "작성자 검색 : ", "제목 검색 : ", "내 글 보기", "좋아요한 글 보기", "댓글 쓴 글 보기"};
     static List<String> category = new CategoryDAO().getCategories();
     private int postSel;
     private int maxPage;
@@ -20,14 +20,14 @@ public class PostListController {
 
     Scanner sc = null;
 
-    public PostListController(int sel, String name, PostListDAO dao) {
+    public PostListController(int sel, String name,String id, PostListDAO dao) {
         sc = new Scanner(System.in);
-        List<PostsVO> list = selectSearchOption(sel, name, dao);
+        List<PostsVO> list = selectSearchOption(sel, name, id, dao);
         while (true) {
             postSel = 0;
             page = 0;
             if (list != null && !list.isEmpty()) {
-                showSelections(list, sel, name, dao);
+                showSelections(list, sel, name, id, dao);
             } else {
                 System.out.println("페이지를 보이는데 실패했습니다");
                 System.out.println("다시 시도하시겠습니까?");
@@ -35,7 +35,7 @@ public class PostListController {
                 if (sc.next().equals("다시")) continue;
                 else break;
             }
-            while(inPageSet()) showSelections(list, sel, name, dao);
+            while(inPageSet()) showSelections(list, sel, name, id, dao);
             if (postSel > 0) {
                 postSel = list.get(postSel + page * 10 -1).getPostno();
                 new PostViewController(postSel, name);
@@ -46,11 +46,11 @@ public class PostListController {
         }
     }
 
-    public List<PostsVO> selectSearchOption(int sel, String name, PostListDAO dao) {
+    public List<PostsVO> selectSearchOption(int sel, String name,String id, PostListDAO dao) {
         List<PostsVO> list;
         switch (sel) {
             case 0:
-                list = dao.selectPage(PostListDAO.allSearch);
+                list = dao.selectPage();
                 break;
             case 1:
                 Collections.sort(category, new Comparator<String>() {
@@ -68,7 +68,7 @@ public class PostListController {
                 System.out.print(catelist);
                 int choice = sc.nextInt();
                 if (choice < category.size() && choice >= 0) {
-                    list = dao.selectPage(dao.categorySearch(category.get(choice)));
+                    list = dao.selectPage(category.get(choice),3);
                 }
                 else{
                     System.out.println("잘못된 입력입니다.");
@@ -77,18 +77,20 @@ public class PostListController {
                 break;
             case 2:
                 System.out.println("검색할 작성자 이름 입력 : ");
-                list = dao.selectPage(dao.authorSearch(sc.next()));
+                list = dao.selectPage("%" + sc.next() + "%",0);
                 break;
             case 3:
                 System.out.println("검색할 글 제목 입력 : ");
-                list = dao.selectPage(dao.titleSearch(sc.next()));
+                list = dao.selectPage("%" + sc.next() + "%",2);
                 break;
             case 4:
-                list = dao.selectPage(dao.myPostsSearch(name));
+                list = dao.selectPage(name,1); // 본인이 쓴 글 검색
+                break;
+            case 5:
+                list = dao.selectPage(name, 4); //좋아요 검색
                 break;
             case 6:
-                list = dao.selectPage(dao.LikeSearch(name));
-                break;
+                list = dao.selectPage(name, 5); //댓글 검색
             default:
                 System.out.println("잘못된 코딩 입력입니다.");
                 return null;
@@ -96,14 +98,14 @@ public class PostListController {
         return list;
     }
 
-    public void showSelections(List<PostsVO> list, int sel, String name, PostListDAO dao) {
+    public void showSelections(List<PostsVO> list, int sel, String name,String id, PostListDAO dao) {
         Collections.sort(list);
         maxPage = list.size() / 10;
         System.out.println("=".repeat(60));
         System.out.println(" ".repeat(10) + listType[sel] + " | 페이지 번호 : " + page + 1);
         System.out.println("=".repeat(60));
         LikesDAO likes = new LikesDAO();
-        HashSet<LikesVO> likeSet = likes.likeSet(name);
+        HashSet<LikesVO> likeSet = likes.likeSet(name, id);
         for (int i = page * 10; i < Math.min(page * 10 + 10, list.size()); i++) {
             System.out.println("-".repeat(60));
             System.out.println("[" + (i % 10 + 1) + "] " + list.get(i).getCategory() + " | " + list.get(i).getTitle() + " | "

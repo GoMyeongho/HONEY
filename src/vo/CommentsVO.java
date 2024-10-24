@@ -11,6 +11,7 @@ public class CommentsVO implements Comparable<CommentsVO> {
     private Date cDate;
     private int commNo;
     private int subNo;
+    private String userId;
     // 댓글 보이는 순서를 위해 추가한 값
     // 날짜순으로 하지 않는 이유는 대댓글 기능을 위해서
 
@@ -88,4 +89,11 @@ public class CommentsVO implements Comparable<CommentsVO> {
         this.subNo = subNo;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }
