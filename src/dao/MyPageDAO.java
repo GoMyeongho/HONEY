@@ -154,11 +154,13 @@ public class MyPageDAO {
         while (true) {
             System.out.println("변경할 제시문를 입력하세요 (기존 제시문 유지는 no 입력) : ");
             pwLOCK = sc.next();
-            String check = pwLOCK;
 
             int intL = pwLOCK.getBytes().length;
 
-            if(pwLOCK.equalsIgnoreCase("no")) break;
+            if(pwLOCK.equalsIgnoreCase("no")) {
+                pwLOCK = cui.getPwLOCK();
+                break;
+            }
             else if (intL < 8) System.out.println("제시문는 8자 이상으로 입력해주세요.");
             else if (intL > 20) System.out.print("제시문는 20자 이하로 입력해주세요.");
             else break;
@@ -169,9 +171,11 @@ public class MyPageDAO {
         while (true) {
             System.out.println("변경할 제시어를 입력하세요 (기존 제시어 유지는 no 입력) : ");
             pwKEY = sc.next();
-            String check = pwKEY;
 
-            if(pwKEY.equalsIgnoreCase("no")) break;
+            if(pwKEY.equalsIgnoreCase("no")) {
+                pwKEY = cui.getPwKey();
+                break;
+            }
             else if (pwKEY.length() > 8) System.out.println("제시어는 8자 이하 입력해주세요.");
             else break;
         }
