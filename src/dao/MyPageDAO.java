@@ -158,7 +158,8 @@ public class MyPageDAO {
 
             int intL = pwLOCK.getBytes().length;
 
-            if (intL < 8) System.out.println("제시문는 8자 이상으로 입력해주세요.");
+            if(pwLOCK.equalsIgnoreCase("no")) break;
+            else if (intL < 8) System.out.println("제시문는 8자 이상으로 입력해주세요.");
             else if (intL > 20) System.out.print("제시문는 20자 이하로 입력해주세요.");
             else break;
         }
@@ -170,8 +171,8 @@ public class MyPageDAO {
             pwKEY = sc.next();
             String check = pwKEY;
 
-
-            if (pwKEY.length() > 8) System.out.println("제시어는 8자 이하 입력해주세요.");
+            if(pwKEY.equalsIgnoreCase("no")) break;
+            else if (pwKEY.length() > 8) System.out.println("제시어는 8자 이하 입력해주세요.");
             else break;
         }
 
