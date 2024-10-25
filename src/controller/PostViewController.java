@@ -79,7 +79,7 @@ public class PostViewController {
                 return true;
             case "2":
                 System.out.println("댓글을 쓸 위치를 선택하시오");
-                System.out.println("[1] ~ [8] 해당 댓글에 대댓글   [9] 맨 마지막에 작성   [0] 나가기");
+                System.out.println("[숫자] 해당 댓글에 대댓글   [9] 맨 마지막에 작성   [0] 나가기");
                 int choice = sc.nextInt();
                 CommentsVO mkComm;
                 switch (choice) {
@@ -100,7 +100,10 @@ public class PostViewController {
                         comments.addComment(mkComm);
                         return true;
                     case 9:
-                        int commNo = comments.getMaxCommNo(postSel);
+                        int commNo;
+                        if (cList.isEmpty()) commNo = 1;
+                        else commNo = comments.getMaxCommNo(postSel);
+
                         mkComm = getCommentsVO();
                         if(mkComm == null) return true;
                         mkComm.setnName(name);

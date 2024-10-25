@@ -32,6 +32,10 @@ public class LikesDAO {
             while (rs.next()) set.add(new LikesVO(postNo, rs.getString("NNAME"),id));
         }catch (Exception e) {
             System.out.println(e + "의 이유로 연결에 실패했습니다.");
+        }finally {
+            Common.close(rs);
+            Common.close(psmt);
+            Common.close(conn);
         }
         return set;
     }
@@ -86,9 +90,11 @@ public class LikesDAO {
 
         } catch (Exception e) {
             System.out.println(e + "취소 실패");
+        }finally {
+            Common.close(psmt);
+            Common.close(conn);
         }
-        Common.close(psmt);
-        Common.close(conn);
+
     }
     public void addLike(int postNo, String userId) {
         String sql = "INSERT INTO LIKES (USERID, POSTNO) VALUES (?, ?)";
@@ -101,8 +107,10 @@ public class LikesDAO {
 
         } catch (Exception e) {
             System.out.println(e + "추가 실패");
+        }finally {
+            Common.close(rs);
+            Common.close(psmt);
+            Common.close(conn);
         }
-        Common.close(psmt);
-        Common.close(conn);
     }
 }

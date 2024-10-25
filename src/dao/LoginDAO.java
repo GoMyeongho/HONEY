@@ -3,13 +3,15 @@ package dao;
 import common.Common;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class LoginDAO {
-    Connection conn;
-    Statement stmt;
-    ResultSet rs;
+    Connection conn = null;
+    Statement stmt = null;
+    PreparedStatement psmt = null;
+    ResultSet rs = null;
 
     public LoginDAO() {
     }
@@ -25,6 +27,28 @@ public class LoginDAO {
             else return null;
         }catch (Exception e) {
             System.out.println(e);
+        }finally {
+            Common.close(rs);
+            Common.close(psmt);
+            Common.close(conn);
+        }
+        return null;
+    }
+    public String getName(String userId) {
+        String sql = "select * from VM_LOGIN where USERID = ? ";
+        try {
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1,userId);
+            rs = psmt.executeQuery();
+            while (rs.next()) return rs.getString("NNAME");
+            return null;
+        }catch (Exception e) {
+            System.out.println(e);
+        }finally {
+            Common.close(rs);
+            Common.close(psmt);
+            Common.close(conn);
         }
         return null;
     }

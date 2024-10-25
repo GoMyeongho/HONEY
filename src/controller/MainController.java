@@ -130,7 +130,7 @@ public class MainController {
             case "2":
                 System.out.println();
                 System.out.println("=".repeat(60));
-                mpCon.showMenu();
+                mpCon.showMenu(ID);
                 return true;
             case "3":
                 new PostMakeController().postMakeConsole(name,ID);

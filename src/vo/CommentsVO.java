@@ -29,13 +29,14 @@ public class CommentsVO implements Comparable<CommentsVO> {
     }
 
     // 출력은 날짜도 해줘야 하기 때문에 생성자에 cDate 추가함
-    public CommentsVO(int commNo, int subNo, int postNo, String nName, String content, Date cDate) {
+    public CommentsVO(int commNo, int subNo, int postNo, String nName,String userId, String content, Date cDate) {
         this.commNo = commNo;
         this.subNo = subNo;
         this.postNo = postNo;
         this.nName = nName;
         this.content = content;
         this.cDate = cDate;
+        this.userId = userId;
     }
     // 빈 생성자
     public CommentsVO() {}

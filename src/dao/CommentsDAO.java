@@ -5,7 +5,7 @@ import java.sql.Date;
 import vo.CommentsVO;
 import vo.PostsVO;
 
-import java.math.BigDecimal;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,6 +18,7 @@ public class CommentsDAO {
     PreparedStatement psmt = null;
     ResultSet rs = null;
     Scanner sc = null;
+    static LoginDAO loDAO = new LoginDAO();
     public CommentsDAO() {
         sc = new Scanner(System.in);
     }
@@ -33,13 +34,18 @@ public class CommentsDAO {
                 int commNo = rs.getInt("COMMNO");
                 int subNo = rs.getInt("SUBNO");
                 String content = rs.getString("CONTENT");
-                String author = rs.getString("NNAME");
+                String userid = rs.getString("USERID");
+                String author = loDAO.getName(userid);
                 Date date = rs.getDate("DATE");
 
-                set.add(new CommentsVO(commNo, subNo, postNo, author, content, date));
+                set.add(new CommentsVO(commNo, subNo, postNo, author, userid, content, date));
             }
         }catch (Exception e) {
             System.out.println(e + "의 이유로 연결에 실패했습니다.");
+        }finally {
+            Common.close(rs);
+            Common.close(psmt);
+            Common.close(conn);
         }
         return set;
     }
@@ -48,18 +54,24 @@ public class CommentsDAO {
         HashSet<CommentsVO> set = new HashSet<>();
         try {
             conn = Common.getConnection();
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM VM_COMM WHERE NNAME = '"+ author + "'");
+            psmt = conn.prepareStatement("SELECT * FROM VM_COMM WHERE NNAME = ?");
+            psmt.setString(1,author);
+            rs = psmt.executeQuery();
             while (rs.next()) {
                 int commNo = rs.getInt("COMMNO");
                 int subNo = rs.getInt("SUBNO");
-                int postNo = rs.getInt("NNAME");
+                int postNo = rs.getInt("POSTNO");
+                String userId = rs.getString("USERID");
                 Date date = rs.getDate("DATE");
 
-                set.add(new CommentsVO(commNo,subNo,postNo,author,"content",date));
+                set.add(new CommentsVO(commNo,subNo,postNo,author,userId,"content",date));
             }
         }catch (Exception e) {
             System.out.println(e + "의 이유로 연결에 실패했습니다.");
+        }finally {
+            Common.close(rs);
+            Common.close(psmt);
+            Common.close(conn);
         }
         return set;
     }

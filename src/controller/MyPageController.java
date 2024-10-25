@@ -30,7 +30,7 @@ public class MyPageController {
     }
 
     // 메뉴 표시
-    public void showMenu() {
+    public void showMenu(String userId) {
         while (true) {
             System.out.println("1. 내 정보 보기");
             System.out.println("2. 내 정보 수정");
@@ -41,14 +41,10 @@ public class MyPageController {
             sc.nextLine(); // 버퍼 비우기
             switch (choice) {
                 case 1: // 1. 내 정보 보기
-                    System.out.print("사용자 ID를 입력하세요: ");
-                    String viewUserID = sc.nextLine();
-                    viewUserInfo(viewUserID);
+                    viewUserInfo(userId);
                     break;
                 case 2: // 2. 내 정보 수정
-                    System.out.print("사용자 ID를 입력하세요: ");
-                    String updateUserID = sc.nextLine();
-                    updateUserInfo(updateUserID);
+                    updateUserInfo(userId);
                     break;
                 case 3: // 3. 종료
                     System.out.println("프로그램을 종료합니다.");

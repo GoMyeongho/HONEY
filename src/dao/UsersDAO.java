@@ -317,6 +317,10 @@ public class UsersDAO {
         } catch (Exception e) {
             System.out.println(e + "연결 실패");
             return;
+        }finally {
+            Common.close(rs);
+            Common.close(psmt);
+            Common.close(conn);
         }
         while (true) {
             System.out.println("제시문: " + pwLOCK);
@@ -339,13 +343,14 @@ public class UsersDAO {
             }catch (Exception e) {
                 System.out.println(e + "연결 실패");
                 return;
+            }finally {
+                Common.close(rs);
+                Common.close(psmt);
+                Common.close(conn);
             }
             System.out.print("비밀번호는 " + userPW + "입니다.");
             break;
         }
-        Common.close(rs);
-        Common.close(stmt);
-        Common.close(conn);
     }
 
 //---------------------------------------------------------------------------------------------------------------------
