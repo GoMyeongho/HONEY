@@ -21,9 +21,11 @@ public class UsersDAO {
 
 // !!!!!회원가입----------------------------------------------------------------------------------
     public void joinMember() {
-        String userPW="", userID ="", nName, phone ="", pwLOCK, pwKey;
+        String userPW="", userID ="", nName = "", phone ="", pwLOCK, pwKey;
     // 아이디 생성
-        while (true) {
+        boolean isRepeat = true;
+        while (isRepeat) {
+            isRepeat = false;
             System.out.println("아이디는 8자 이상 16자 이하의 영문 및 숫자이어야 합니다. (중복 불가능)");
             System.out.print("아이디: ");
             List<String> IDList = new ArrayList<>();
@@ -54,10 +56,11 @@ public class UsersDAO {
                 // if 중복된 아이디 확인
                 if (userID.equals(e)){
                     System.out.println("이미 존재하는 아이디 입니다.");
-                    continue;
+                    isRepeat = true;
+                    
                 }
             }
-            break;
+            
         }
         // 비밀번호 생성
         while (true) {
@@ -82,7 +85,9 @@ public class UsersDAO {
 
         }
         // 닉네임 생성
-        while (true) {
+        isRepeat = true;
+        while (isRepeat) {
+            isRepeat = false;
             System.out.println("(사이트)에서 사용하실 닉네임을 입력 해 주세요");
             System.out.println("닉네임은 한글 기준 8자 까지 그리고 영어, 숫자 기준 16자까지 가능하며 중복 불가능합니다.");
             System.out.print("닉네임: ");
@@ -108,17 +113,18 @@ public class UsersDAO {
                 System.out.println("닉네임 생성 조건을 다시 확인 후 입력 해 주세요.");
                 continue;
             }
-            for (String e : nNameList) {
-                // if 중복된 닉네임
-                if (nNameList.contains(nName)){
-                    System.out.println("이미 존재하는 닉네임 입니다.");
-                    continue;
-                }
+            if (nNameList.contains(nName)){
+                System.out.println("이미 존재하는 닉네임 입니다.");
+                isRepeat = true;
+
+
             }
-            break;
+            
         }
         // 전화번호 입력
-        while (true) {
+        isRepeat = true;
+        while (isRepeat) {
+            isRepeat = false;
             System.out.println("전화번호를 입력 해 주세요(010-0000-0000, 형태로 하이픈을 포함하여 입력 해 주세요)");
             System.out.print("전화번호: ");
             phone = sc.next();
@@ -126,9 +132,9 @@ public class UsersDAO {
             try {
                 conn = Common.getConnection();  // 오라클 DB 연결
                 stmt = conn.createStatement();
-                rs = stmt.executeQuery("SELECT USERID FROM VM_LOGIN");
+                rs = stmt.executeQuery("SELECT PHONE FROM USERS");
                 while(rs.next()){
-                    String Phone = rs.getString("Phone");
+                    String Phone = rs.getString("PHONE");
                     phonList.add(Phone);
                 }
             } catch (Exception e){
@@ -145,12 +151,12 @@ public class UsersDAO {
             }
             for (String e : phonList) {
                 // if 중복된 전화번호 확인
-                if (phonList.equals(e)){
+                if (phone.equals(e)){
                     System.out.println("이미 가입된 번호 입니다.");
-                    continue;
+                    isRepeat = true;
                 }
             }
-            break;
+            
         }
         // 비밀번호 찾기 시 사용 할 질문 및 키워드
         while (true) {
@@ -160,9 +166,10 @@ public class UsersDAO {
             System.out.print("질문 입력: ");
             pwLOCK = sc.nextLine();
             if (pwLOCK.getBytes().length >= 60) {
+                System.out.print("질문 생성 조건을 확인 후 다시 입력 해 주세요.");
                 continue;
             } else {
-                System.out.print("질문 생성 조건을 확인 후 다시 입력 해 주세요.");
+
             }
             if(pwLOCK.contains(userPW)) {
                 continue;
@@ -216,7 +223,7 @@ public class UsersDAO {
         try {
             conn = Common.getConnection();  // 오라클 DB 연결
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT USERID FROM VM_LOGIN");
+            rs = stmt.executeQuery("SELECT PHONE FROM USERS");
             while(rs.next()){
                 String Phone = rs.getString("Phone");
                 phoneList.add(Phone);
@@ -299,12 +306,7 @@ public class UsersDAO {
                 System.out.println("아이디 입력 조건을 다시 확인 해 주세요");
                 continue;
             }
-            for (String e : IDList) {
-                if (IDList.equals(e)){
-                }
-                else {
-                }
-            }
+
             break;
         }
 
