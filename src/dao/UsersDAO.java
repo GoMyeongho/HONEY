@@ -223,9 +223,9 @@ public class UsersDAO {
         try {
             conn = Common.getConnection();  // 오라클 DB 연결
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT PHONE FROM USERS");
+            rs = stmt.executeQuery("SELECT PHONE FROM VM_LOGIN");
             while(rs.next()){
-                String Phone = rs.getString("Phone");
+                String Phone = rs.getString("PHONE");
                 phoneList.add(Phone);
             }
         } catch (Exception e){
@@ -294,19 +294,18 @@ public class UsersDAO {
             System.out.print("아이디: ");
             System.out.println();
             userID = noKor();
-            if (rs.next()) {
-                userPW = rs.getString("USERPW");
-            } else {
-                System.out.println("해당 아이디로 가입된 계정이 없습니다.");
-                return;
-            }
 
             if (userID.getBytes().length >= 8 && userID.getBytes().length <= 16) {
             } else {
                 System.out.println("아이디 입력 조건을 다시 확인 해 주세요");
+                return;
+            }
+            if (rs.next()) {
+                userPW = rs.getString("USERPW");
+            } else {
+                System.out.println("해당 아이디로 가입된 계정이 없습니다.");
                 continue;
             }
-
             break;
         }
 
