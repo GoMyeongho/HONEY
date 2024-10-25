@@ -22,10 +22,11 @@ public class PostListController {
 
     public PostListController(int sel, String name, String id, PostListDAO dao) {
         sc = new Scanner(System.in);
-        List<PostsVO> list = selectSearchOption(sel, name, dao);
+        List<PostsVO> list;
         while (true) {
             postSel = 0;
             page = 0;
+            list = selectSearchOption(sel, name, dao);
             if (list != null && !list.isEmpty()) {
                 showSelections(list, sel, name, id);
             } else {
