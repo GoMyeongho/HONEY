@@ -32,8 +32,8 @@ public class PostListDAO {
                 "SELECT * From VM_POSTS_PAGE WHERE CATE = ?",
                 "SELECT * From VM_POSTS_PAGE WHERE POSTNO IN " +
                         "(SELECT POSTNO FROM LIKES WHERE NNAME = ?)",
-                "SELECT vpp.POSTNO as POSTNO, TITLE, CATE, PDATE, c.NNAME as NNAME FROM VM_POST_PAGE vpp " +
-                        "JOIN COMMENTS c ON vpp.POSTNO = c.POSTNO WHERE NNAME = ?"
+                "SELECT vpp.POSTNO as POSTNO, vpp.TITLE, vpp.CATE, vpp.PDATE, vpp.NNAME as NNAME FROM VM_POSTS_PAGE vpp " +
+                        "JOIN VM_COMM vc ON vpp.POSTNO = vc.POSTNO WHERE vc.NNAME = ? group by vc.POSTNO"
         };
         try {
             conn = Common.getConnection();  // 오라클 DB 연결

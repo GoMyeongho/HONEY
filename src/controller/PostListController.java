@@ -91,6 +91,7 @@ public class PostListController {
                 break;
             case 6:
                 list = dao.selectPage(name, 5); //댓글 검색
+                break;
             default:
                 System.out.println("잘못된 코딩 입력입니다.");
                 return null;
@@ -102,7 +103,7 @@ public class PostListController {
         Collections.sort(list);
         maxPage = list.size() / 10;
         System.out.println("=".repeat(60));
-        System.out.println(" ".repeat(10) + listType[sel] + " | 페이지 번호 : " + page + 1);
+        System.out.println(" ".repeat(10) + listType[sel] + " | 페이지 번호 : " + (page + 1));
         System.out.println("=".repeat(60));
         LikesDAO likes = new LikesDAO();
         HashSet<LikesVO> likeSet = likes.likeSet(name, id);

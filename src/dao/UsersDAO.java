@@ -249,7 +249,7 @@ public class UsersDAO {
             try {
                 conn = Common.getConnection();
                 stmt = conn.createStatement();
-                rs = stmt.executeQuery("SELECT userID FROM USERS WHERE PHONE = '" + phone +"';");
+                rs = stmt.executeQuery("SELECT userID FROM USERS WHERE PHONE = '" + phone +"'");
                 if (rs.next()) {
                     userID = rs.getString("USERID");
                     String maskedID = maskUserID(userID);
@@ -300,7 +300,7 @@ public class UsersDAO {
                 System.out.println("아이디 입력 조건을 다시 확인 해 주세요");
                 return;
             }
-            if (rs.next()) {
+            if (IDList.contains(userID)) {
                 userPW = rs.getString("USERPW");
             } else {
                 System.out.println("해당 아이디로 가입된 계정이 없습니다.");
@@ -312,7 +312,7 @@ public class UsersDAO {
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT pwLOCK FROM USERS WHERE userID = '" + userID +"';");
+            rs = stmt.executeQuery("SELECT pwLOCK FROM USERS WHERE userID = '" + userID +"'");
             rs.next();
             pwLOCK = rs.getString("pwLOCK");
         } catch (Exception e) {
@@ -338,7 +338,7 @@ public class UsersDAO {
             try {
                 conn = Common.getConnection();
                 stmt = conn.createStatement();
-                rs = stmt.executeQuery("SELECT userPW FROM USERS WHERE pwKey = '" + pwKey +"';");
+                rs = stmt.executeQuery("SELECT userPW FROM USERS WHERE pwKey = '" + pwKey +"'");
                 rs.next();
                 userPW = rs.getString("userPW");
             }catch (Exception e) {
@@ -368,8 +368,8 @@ public class UsersDAO {
     public String inputPhone() {
         String phone = sc.next();
         for (int i = 0; i < phone.length(); i++) {
-            if (phone.charAt(i) >= 48 || phone.charAt(i) <= 57 || phone.charAt(i) == 45)
-                //phone.matches("^010-\\d{4}-\\d{4}$")  << gpt가 추천해준 정규식
+            if (phone.matches("^010-\\d{4}-\\d{4}$"))
+                //  << gpt가 추천해준 정규식
                 return phone;
         }
         System.out.println("전화번호 형식이 맞지 않습니다.");
