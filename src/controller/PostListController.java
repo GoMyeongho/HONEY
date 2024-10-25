@@ -66,7 +66,8 @@ public class PostListController {
                 for (int i = 1; i < category.size(); i++) cateList.append("[").append(i).append("] ").append(category.get(i)).append("  ");
                 cateList.append("[0] ").append(category.get(0));
                 System.out.println("검색할 카테고리 입력");
-                System.out.print(cateList);
+                System.out.println(cateList);
+                System.out.print("입력 : ");
                 int choice = sc.nextInt();
                 if (choice < category.size() && choice >= 0) {
                     list = dao.selectPage(category.get(choice),3);
@@ -75,6 +76,7 @@ public class PostListController {
                     System.out.println("잘못된 입력입니다.");
                     return null;
                 }
+                sc.nextLine();
                 break;
             case 2:
                 System.out.println("검색할 작성자 이름 입력 : ");
@@ -134,7 +136,7 @@ public class PostListController {
                 return true;
             case ">":
                 if (page == maxPage) System.out.println("가장 마지막 페이지 입니다.");
-                page = (page > maxPage) ? maxPage : page + 1;
+                page = (page == maxPage) ? maxPage : page + 1;
                 return true;
             case "0":
                 return false;

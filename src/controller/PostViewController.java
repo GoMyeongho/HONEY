@@ -13,9 +13,9 @@ import java.util.*;
 public class PostViewController {
     Scanner sc = new Scanner(System.in);
     private int page;
-    private int postSel;
-    private String name;
-    private String id;
+    private final int POSTNO;
+    private final String NAME;
+    private final String ID;
     PostViewDAO dao = new PostViewDAO();
     LikesDAO likes = new LikesDAO();
     CommentsDAO comments = new CommentsDAO();
@@ -24,24 +24,24 @@ public class PostViewController {
     PostsVO vo;
     static List<String> category = new CategoryDAO().getCategories();
 
-    public PostViewController(int postSel, String name, String id) {
-        this.postSel = postSel;
-        this.name = name;
-        this.id = id;
+    public PostViewController(int postNo, String name, String id) {
+        this.POSTNO = postNo;
+        this.NAME = name;
+        this.ID = id;
         page = 0;
-        do showPage(postSel,name,id);
+        do showPage(postNo, name,id);
         while(selectOptions());
     }
 
-    public void showPage(int postSel, String name, String id){
-        cList = comments.commentsSet(postSel);
+    public void showPage(int postNO, String name, String id){
+        cList = comments.commentsSet(postNO);
         Collections.sort(cList);
-        likeSet = likes.likeSet(postSel,id);
+        likeSet = likes.likeSet(postNO,id);
         int likeCount = likeSet.size();
 
-        vo = dao.viewPost(postSel);
+        vo = dao.viewPost(postNO);
         System.out.println("=".repeat(60));
-        System.out.println("[" + postSel + "] " + vo.getCategory() + " | " + vo.getTitle() + " | " + vo.getAuthor() + " | " + vo.getDate());
+        System.out.println("[" + postNO + "] " + vo.getCategory() + " | " + vo.getTitle() + " | " + vo.getAuthor() + " | " + vo.getDate());
         System.out.println("=".repeat(60));
         System.out.println();
         System.out.println(vo.getContent());
@@ -55,7 +55,7 @@ public class PostViewController {
 
         System.out.println("=".repeat(60));
         for(int i = page * 8; i < Math.min(page * 8 + 8,cList.size()); i++) {
-            String ans = (i == 0 || cList.get(i).getCommNo() == cList.get(i-1).getCommNo())
+            String ans = (i == 0 || cList.get(i).getCommNo() != cList.get(i-1).getCommNo())
                     ? "" : "->";
             System.out.print(ans);
             System.out.print(cList.get(i).getnName() + " | " + cList.get(i).getcDate() + "\n" + cList.get(i).getContent());
@@ -76,8 +76,8 @@ public class PostViewController {
         int maxPage = cList.size() / 8;
         switch (sel) {
             case "1":
-                if (likes.isLike(likeSet, name)) likes.cancelLike(postSel, id);
-                else likes.addLike(postSel, id);
+                if (likes.isLike(likeSet, NAME)) likes.cancelLike(POSTNO, ID);
+                else likes.addLike(POSTNO, ID);
                 return true;
             case "2":
                 System.out.println("댓글을 쓸 위치를 선택하시오");
@@ -93,17 +93,17 @@ public class PostViewController {
                         CommentsVO tempVO = cList.get(page * 8 + choice - 1);
                         mkComm = getCommentsVO();
                         if(mkComm == null) return true;
-                        mkComm.setnName(name);
-                        mkComm.setUserId(id);
-                        mkComm.setPostNo(postSel);
+                        mkComm.setnName(NAME);
+                        mkComm.setUserId(ID);
+                        mkComm.setPostNo(POSTNO);
                         comments.addComment(mkComm,tempVO.getCommNo());
                         return true;
                     case 9:
                         mkComm = getCommentsVO();
                         if(mkComm == null) return true;
-                        mkComm.setnName(name);
-                        mkComm.setUserId(id);
-                        mkComm.setPostNo(postSel);
+                        mkComm.setnName(NAME);
+                        mkComm.setUserId(ID);
+                        mkComm.setPostNo(POSTNO);
                         mkComm.setSubNo(1);
                         comments.addComment(mkComm);
                         return true;
@@ -114,14 +114,14 @@ public class PostViewController {
                         return true;
                 }
             case "3":
-                if (vo.getAuthor().equals(name)) {
+                if (vo.getAuthor().equals(NAME)) {
                     PostsVO mkPost = getPostsVO(vo);
                     dao.updatePost(mkPost);
                 }
                 else System.out.println("잘못된 입력입니다.");
                 return true;
             case "삭제":
-                if (vo.getAuthor().equals(name)) {
+                if (vo.getAuthor().equals(NAME)) {
                     System.out.println("정말로 삭제하시려면 \"삭제확인\" 을 입력해주세요 ");
                     if (sc.next().equals("삭제확인")) {
                         dao.deletePost(vo);
@@ -258,7 +258,7 @@ public class PostViewController {
         int choice;
         System.out.println("댓글 목록을 불러옵니다.");
         for (CommentsVO vo : cList){
-            if (vo.getnName().equals(name)) {
+            if (vo.getnName().equals(NAME)) {
                 System.out.println();
                 System.out.print("[" + commCnt++ + "]" + "|" + vo.getnName() + " | " + vo.getcDate() + "\n" + vo.getContent());
                 System.out.println("-".repeat(60));
@@ -278,7 +278,7 @@ public class PostViewController {
                 if (choice < commCnt) {
                     commCnt = 1;
                     for (CommentsVO vo2 : cList){
-                        if (Objects.equals(vo2.getnName(), name)) {
+                        if (Objects.equals(vo2.getnName(), NAME)) {
                             if (commCnt++ == choice) {
                                     CommentsVO updateVO = getCommentsVO();
                                     updateVO.setCommNo(vo2.getCommNo());
@@ -303,7 +303,7 @@ public class PostViewController {
         int choice;
         System.out.println("댓글 목록을 불러옵니다.");
         for (CommentsVO vo : cList){
-            if (vo.getnName().equals(name)) {
+            if (vo.getnName().equals(NAME)) {
                 System.out.println();
                 System.out.print("[" + commCnt++ + "]" + "|" + vo.getnName() + " | " + vo.getcDate() + "\n" + vo.getContent());
                 System.out.println("-".repeat(60));
@@ -323,7 +323,7 @@ public class PostViewController {
                 if (choice < commCnt) {
                     commCnt = 1;
                     for (CommentsVO vo2 : cList){
-                        if (Objects.equals(vo2.getnName(), name)) {
+                        if (Objects.equals(vo2.getnName(), NAME)) {
                             if (commCnt++ == choice) {
                                 CommentsVO deleteVO = new CommentsVO();
                                 deleteVO.setCommNo(vo2.getCommNo());
