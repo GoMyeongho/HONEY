@@ -378,7 +378,6 @@ public class UsersDAO {
         return visiblePart + maskedPart;
     }
 
-
 }
 
 
