@@ -50,7 +50,7 @@ public class UsersDAO {
 
             } else {
                 System.out.println("아이디 생성 조건을 다시 확인 후 입력 해 주세요.");
-                continue;
+                return;
             }
             for (String e : IDList) {
                 // if 중복된 아이디 확인
@@ -327,11 +327,11 @@ public class UsersDAO {
         while (true) {
             System.out.println("제시문: " + pwLOCK);
             // 데이터베이스에 있는 아이디 확인하여 pwLOCK 가져오기
-            System.out.println("키워드를 입력 해 주세요. 키워드는 한글 기준 8자 이하 입니다.");
+            System.out.println("제시어를 입력 해 주세요. 제시어는 한글 기준 8자 이하 입니다.");
             System.out.print("키워드: ");
-            if (pwKey.equals(sc.next())) {
+            if (pwKey.equals(sc.nextLine())) {
             } else {
-                System.out.println("키워드가 다릅니다");
+                System.out.println("제시어가 다릅니다");
                 continue;
             }
             try {
