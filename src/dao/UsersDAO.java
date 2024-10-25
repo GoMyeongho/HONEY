@@ -6,6 +6,7 @@ import vo.UsersVO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 // 가희씨가 사용할 DAO 자바 파일
@@ -22,6 +23,7 @@ public class UsersDAO {
 // !!!!!회원가입----------------------------------------------------------------------------------
     public void joinMember() {
         String userPW="", userID ="", nName = "", phone ="", pwLOCK, pwKey;
+        String rePW="";
     // 아이디 생성
         boolean isRepeat = true;
         while (isRepeat) {
@@ -60,27 +62,38 @@ public class UsersDAO {
                     
                 }
             }
-            
         }
         // 비밀번호 생성
-        while (true) {
+        isRepeat = true;
+        while (isRepeat) {
+            isRepeat = false;
             System.out.println("-비밀번호는 8자 이상 16자 이하의 영문 및 숫자이어야 합니다.");
             System.out.println("-비밀번호는 특수문자 및 영문 대소문자가 모두 포함되어야 합니다.");
             System.out.print("비밀번호: ");
             userPW = noKor();
             if (userPW == null) {
                 System.out.println("-비밀번호 생성 조건을 다시 확인 후 입력 해 주세요.");
-                continue;
+                isRepeat = true;
             }
             if (userPW.getBytes().length >= 8 && userPW.getBytes().length <= 16) {
-                break;
             } else {
                 System.out.println("-비밀번호 생성 조건을 다시 확인 후 입력 해 주세요.");
             }
             if (!userPW.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[~!@#\\$%\\^&\\*]).{8,16}$")) {
                 System.out.println("-비밀번호는 8자 이상 16자 이하의 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
-                continue;
+                isRepeat = true;
                 // gpt가 추천해준 비밀번호 생성 로직
+            } else {
+                continue;
+            }
+            System.out.println("비밀번호 확인을 위해 재입력 해 주세요");
+            System.out.print("비밀번호 확인: ");
+            rePW = sc.next();
+            if (Objects.equals(rePW, userPW)) {
+                break;
+            } else {
+                System.out.println("비밀번호가 일치하지 않습니다. 다시 입력 해 주세요");
+                isRepeat = true;
             }
 
         }
