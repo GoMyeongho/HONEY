@@ -82,7 +82,7 @@ public class MyPageDAO {
             System.out.print("변경할 비밀번호(8자 이상 20자 이하)(기존 비밀번호 유지는 no 입력) : ");
             userPW = sc.next();
 
-            Pattern passPattern1 = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\\\d)(?=.*\\\\W).{8,20}$");
+            Pattern passPattern1 = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
             // 정규식표현(비밀번호)
             // ^문자열 : 특정 문자열로 시작(시작점)
             // (?=.*[a-zA-Z]) : 영어 대문자 또는 소문자가 최소 한 번 포함되어야 함
@@ -94,7 +94,7 @@ public class MyPageDAO {
 
             if(userPW.equalsIgnoreCase("no")) break;
             else if (userPW.length() < 8) System.out.println("비밀번호는 8자 이상 입력해주세요.");
-            else if (userPW.getBytes().length > 20) System.out.print("비밀번호는 20자 이하 영문자와 특수문자(&를 제외)로 입력해주세요.");
+            else if (userPW.length() > 20) System.out.print("비밀번호는 20자 이하 영문자와 특수문자(&를 제외)로 입력해주세요.");
             else if (!passMatcher1.find()) System.out.println("비밀번호는 영문자, 숫자, 특수기호만 사용 할 수 있습니다."); // passpattern1에 정의된 패턴과 일치하지 않는 경우
             else if (userPW.indexOf('&') >= 0) System.out.println("&는 비밀번호로 사용할 수 없습니다.");
             else break;
@@ -153,7 +153,7 @@ public class MyPageDAO {
         String pwLOCK = "";
         while (true) {
             System.out.println("변경할 제시문를 입력하세요 (기존 제시문 유지는 no 입력) : ");
-            pwLOCK = sc.next();
+            pwLOCK = sc.nextLine();
             String check = pwLOCK;
 
             int intL = pwLOCK.getBytes().length;
@@ -167,7 +167,7 @@ public class MyPageDAO {
         String pwKEY = "";
         while (true) {
             System.out.println("변경할 제시어를 입력하세요 (기존 제시어 유지는 no 입력) : ");
-            pwKEY = sc.next();
+            pwKEY = sc.nextLine();
             String check = pwKEY;
 
 
