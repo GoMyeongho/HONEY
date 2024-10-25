@@ -12,7 +12,7 @@ import java.util.*;
 
 public class PostViewController {
     Scanner sc = new Scanner(System.in);
-    private int page= 0;
+    private int page;
     private int postSel;
     private String name;
     private String id;
@@ -24,10 +24,11 @@ public class PostViewController {
     PostsVO vo;
     static List<String> category = new CategoryDAO().getCategories();
 
-    public PostViewController(int postSel, String name,String id) {
+    public PostViewController(int postSel, String name, String id) {
         this.postSel = postSel;
         this.name = name;
         this.id = id;
+        page = 0;
         do showPage(postSel,name,id);
         while(selectOptions());
     }
@@ -57,8 +58,8 @@ public class PostViewController {
             String ans = (cList.get(i).getSubNo() == 1)
                     ? "" : "->";
             System.out.print(ans);
-            System.out.print(cList.get(i).getnName() + "\n" + cList.get(i).getContent());
-            System.out.print("-".repeat(60));
+            System.out.print(cList.get(i).getnName() + " | " + cList.get(i).getcDate() + "\n" + cList.get(i).getContent());
+            System.out.println("-".repeat(60));
         }
         System.out.println("[<] 댓글 이전 페이지  [" + page + 1 + "]  [>] 댓글 다음 페이지");
 
@@ -66,12 +67,13 @@ public class PostViewController {
         if (likes.isLike(likeSet, name)) System.out.print("좋아요 취소");
         else System.out.print("좋아요 하기");
         if (vo.getAuthor().equals(name)) {
-            System.out.println("  [2] 댓글 쓰기  [3] 글 수정하기  [삭제] 글 삭제하기  [0] 나가기");
+            System.out.println("  [2] 댓글 쓰기  [3] 글 수정하기  [4] 댓글 수정하기  [5] 댓글 삭제하기  [삭제] 글 삭제하기  [0] 나가기");
         }
-        else System.out.println("  [2] 댓글 쓰기                                       [0] 나가기");
+        else System.out.println("  [2] 댓글 쓰기            [4] 댓글 수정하기               [5] 댓글 삭제하기                [0] 나가기");
     }
     public boolean selectOptions() {
         String sel = sc.next();
+        int maxPage = cList.size() / 8;
         switch (sel) {
             case "1":
                 if (likes.isLike(likeSet, name)) likes.cancelLike(postSel, id);
@@ -89,26 +91,19 @@ public class PostViewController {
                             return true;
                         }
                         CommentsVO tempVO = cList.get(page * 8 + choice - 1);
-                        int subNo = comments.getMaxSubNo(tempVO);
                         mkComm = getCommentsVO();
                         if(mkComm == null) return true;
                         mkComm.setnName(name);
                         mkComm.setUserId(id);
-                        mkComm.setSubNo(subNo);
                         mkComm.setPostNo(postSel);
                         mkComm.setCommNo(tempVO.getCommNo());
                         comments.addComment(mkComm);
                         return true;
                     case 9:
-                        int commNo;
-                        if (cList.isEmpty()) commNo = 1;
-                        else commNo = comments.getMaxCommNo(postSel);
-
                         mkComm = getCommentsVO();
                         if(mkComm == null) return true;
                         mkComm.setnName(name);
                         mkComm.setUserId(id);
-                        mkComm.setCommNo(commNo);
                         mkComm.setPostNo(postSel);
                         mkComm.setSubNo(1);
                         comments.addComment(mkComm);
@@ -139,6 +134,24 @@ public class PostViewController {
                 return true;
             case "0":
                 return false;
+
+            case "4":
+                while(updateComm());
+                return true;
+            case "5":
+                while(deleteComm());
+                return true;
+
+            case "<":
+                if(page == 0) System.out.println("가장 처음 페이지 입니다.");
+                page = (page > 0) ? page - 1 : 0;
+                return true;
+
+            case ">":
+                if (page == maxPage) System.out.println("가장 마지막 페이지 입니다.");
+                page = (page > maxPage) ? maxPage : page + 1;
+                return true;
+
             default:
                 System.out.println("잘못된 입력입니다.");
                 return true;
@@ -152,7 +165,7 @@ public class PostViewController {
         String temp= "";
         String content = "";
         while (content.getBytes().length < 150){
-            content += temp;
+
             temp = sc.nextLine();
             temp += "\n";
             if (temp.equals("[완료]\n")) break;
@@ -160,7 +173,9 @@ public class PostViewController {
             if((temp + content).getBytes().length > 150) {
                 temp = "";
                 System.out.println("글자수 제한을 초과했습니다.");
+
             }
+            content += temp;
         }
         CommentsVO vo = new CommentsVO();
         vo.setContent(content);
@@ -223,7 +238,6 @@ public class PostViewController {
         String temp= "";
         String content = "";
         while (content.getBytes().length < 600){
-            content += temp;
             temp = sc.nextLine();
             temp += "\n";
             if (temp.equals("[완료]")) {
@@ -235,8 +249,99 @@ public class PostViewController {
                 temp = "";
                 System.out.println("글자수 제한을 초과했습니다.");
             }
+            content += temp;
         }
         return vo;
     }
+    public boolean updateComm() {
+        int commCnt = 1;
+        String sel;
+        int choice;
+        System.out.println("댓글 목록을 불러옵니다.");
+        for (CommentsVO vo : cList){
+            if (vo.getnName() == name) {
+                System.out.println();
+                System.out.print("[" + commCnt++ + "]" + "|" + vo.getnName() + " | " + vo.getcDate() + "\n" + vo.getContent());
+                System.out.println("-".repeat(60));
+            }
+        }
+        if (commCnt == 1) {
+            System.out.println("댓글이 존재하지 않습니다.");
+            return false;
+        }
+        System.out.println("수정하실 댓글을 선택해주세요");
+        System.out.println("[번호] 해당 글 수정  [0] 나가기");
+        while(true){
+            sel = sc.next();
+            if (sel.equals("0")) return false;
+            try{
+                choice = Integer.parseInt(sel);
+                if (choice < commCnt) {
+                    commCnt = 1;
+                    for (CommentsVO vo2 : cList){
+                        if (Objects.equals(vo2.getnName(), name)) {
+                            if (commCnt++ == choice) {
+                                    CommentsVO updateVO = getCommentsVO();
+                                    updateVO.setCommNo(vo2.getCommNo());
+                                    updateVO.setPostNo(vo2.getPostNo());
+                                    updateVO.setSubNo(vo2.getSubNo());
+                                    comments.updateComment(updateVO);
+                                    System.out.println("수정이 완료 되었습니다.");
+                                    return true;
+                            }
+                        }
+                    }
+                }
+            } catch (NumberFormatException e) {
+                    System.out.println("잘못된 입력입니다.");
+            }
+        }
+    }
+
+    public boolean deleteComm() {
+        int commCnt = 1;
+        String sel;
+        int choice;
+        System.out.println("댓글 목록을 불러옵니다.");
+        for (CommentsVO vo : cList){
+            if (vo.getnName() == name) {
+                System.out.println();
+                System.out.print("[" + commCnt++ + "]" + "|" + vo.getnName() + " | " + vo.getcDate() + "\n" + vo.getContent());
+                System.out.println("-".repeat(60));
+            }
+        }
+        if (commCnt == 1) {
+            System.out.println("댓글이 존재하지 않습니다.");
+            return false;
+        }
+        System.out.println("삭제하실 댓글을 선택해주세요");
+        System.out.println("[번호] 해당 글 수정  [0] 나가기");
+        while(true){
+            sel = sc.next();
+            if (sel.equals("0")) return false;
+            try{
+                choice = Integer.parseInt(sel);
+                if (choice < commCnt) {
+                    commCnt = 1;
+                    for (CommentsVO vo2 : cList){
+                        if (Objects.equals(vo2.getnName(), name)) {
+                            if (commCnt++ == choice) {
+                                CommentsVO deleteVO = new CommentsVO();
+                                deleteVO.setCommNo(vo2.getCommNo());
+                                deleteVO.setPostNo(vo2.getPostNo());
+                                deleteVO.setSubNo(vo2.getSubNo());
+                                comments.deleteComment(deleteVO);
+                                System.out.println("수정이 완료 되었습니다.");
+                                return true;
+                            }
+                        }
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("잘못된 입력입니다.");
+            }
+        }
+    }
+
 }
 

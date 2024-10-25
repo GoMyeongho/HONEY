@@ -1,6 +1,8 @@
 package controller;
 
+import dao.LoginDAO;
 import dao.MyPageDAO;
+import dao.PostListDAO;
 import vo.UsersVO;
 
 import java.util.Scanner;
@@ -30,11 +32,14 @@ public class MyPageController {
     }
 
     // 메뉴 표시
-    public void showMenu(String userId) {
+    public boolean showMenu(String userId) {
         while (true) {
             System.out.println("1. 내 정보 보기");
             System.out.println("2. 내 정보 수정");
-            System.out.println("3. 종료");
+            System.out.println("3. 내가 쓴 글 보기");
+            System.out.println("4. 좋아요 한 글 검색");
+            System.out.println("5. 댓글 쓴 글 보기");
+            System.out.println("0. 종료");
             System.out.print("원하는 작업을 선택하세요: ");
 
             int choice = sc.nextInt();
@@ -46,9 +51,15 @@ public class MyPageController {
                 case 2: // 2. 내 정보 수정
                     updateUserInfo(userId);
                     break;
-                case 3: // 3. 종료
+                case 3: // 3. 내가 쓴 글 보기
+                    new PostListController(4,new LoginDAO().getName(userId),userId, new PostListDAO());
+                case 4: // 4. 좋아요 한 글 보기
+                    new PostListController(5,new LoginDAO().getName(userId),userId, new PostListDAO());
+                case 5: // 5. 댓글 쓴 글 보기
+                    new PostListController(6,new LoginDAO().getName(userId),userId, new PostListDAO());
+                case 0: // 0. 종료
                     System.out.println("프로그램을 종료합니다.");
-                    return;
+                    return false;
                 default:
                     System.out.println("잘못된 선택입니다. 다시 시도하세요.");
             }

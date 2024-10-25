@@ -18,16 +18,16 @@ public class PostListController {
 
 
 
-    Scanner sc = null;
+    Scanner sc;
 
-    public PostListController(int sel, String name,String id, PostListDAO dao) {
+    public PostListController(int sel, String name, String id, PostListDAO dao) {
         sc = new Scanner(System.in);
-        List<PostsVO> list = selectSearchOption(sel, name, id, dao);
+        List<PostsVO> list = selectSearchOption(sel, name, dao);
         while (true) {
             postSel = 0;
             page = 0;
             if (list != null && !list.isEmpty()) {
-                showSelections(list, sel, name, id, dao);
+                showSelections(list, sel, name, id);
             } else {
                 System.out.println("페이지를 보이는데 실패했습니다");
                 System.out.println("다시 시도하시겠습니까?");
@@ -35,7 +35,7 @@ public class PostListController {
                 if (sc.next().equals("다시")) continue;
                 else break;
             }
-            while(inPageSet()) showSelections(list, sel, name, id, dao);
+            while(inPageSet()) showSelections(list, sel, name, id);
             if (postSel > 0) {
                 postSel = list.get(postSel + page * 10 -1).getPostno();
                 new PostViewController(postSel, name, id);
@@ -46,14 +46,14 @@ public class PostListController {
         }
     }
 
-    public List<PostsVO> selectSearchOption(int sel, String name,String id, PostListDAO dao) {
+    public List<PostsVO> selectSearchOption(int sel, String name, PostListDAO dao) {
         List<PostsVO> list;
         switch (sel) {
             case 0:
                 list = dao.selectPage();
                 break;
             case 1:
-                Collections.sort(category, new Comparator<String>() {
+                Collections.sort(category, new Comparator<>() {
                     @Override
                     public int compare(String o1, String o2) {
                         if (o1.equals("QNA")) return -1;
@@ -61,11 +61,11 @@ public class PostListController {
                         return o1.compareTo(o2);
                     }
                 });
-                String catelist = "";
-                for (int i = 1; i < category.size(); i++) catelist += "[" + i + "] " + category.get(i) + "  ";
-                catelist += "[0] " + category.get(0);
+                StringBuilder cateList = new StringBuilder();
+                for (int i = 1; i < category.size(); i++) cateList.append("[").append(i).append("] ").append(category.get(i)).append("  ");
+                cateList.append("[0] ").append(category.get(0));
                 System.out.println("검색할 카테고리 입력");
-                System.out.print(catelist);
+                System.out.print(cateList);
                 int choice = sc.nextInt();
                 if (choice < category.size() && choice >= 0) {
                     list = dao.selectPage(category.get(choice),3);
@@ -98,7 +98,7 @@ public class PostListController {
         return list;
     }
 
-    public void showSelections(List<PostsVO> list, int sel, String name,String id, PostListDAO dao) {
+    public void showSelections(List<PostsVO> list, int sel, String name,String id) {
         Collections.sort(list);
         maxPage = list.size() / 10;
         System.out.println("=".repeat(60));
@@ -128,11 +128,11 @@ public class PostListController {
                 return false;
             case "<":
                 if(page == 0) System.out.println("가장 처음 페이지 입니다.");
-                page = (page > 0) ? page-- : 0;
+                page = (page > 0) ? page - 1 : 0;
                 return true;
             case ">":
                 if (page == maxPage) System.out.println("가장 마지막 페이지 입니다.");
-                page = (page > maxPage) ? maxPage : page++;
+                page = (page > maxPage) ? maxPage : page + 1;
                 return true;
             case "0":
                 return false;
@@ -144,9 +144,6 @@ public class PostListController {
         }
     }
 
-    public int getPostSel() {
-        return postSel;
-    }
 
 }
 
