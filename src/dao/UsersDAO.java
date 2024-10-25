@@ -223,7 +223,7 @@ public class UsersDAO {
         try {
             conn = Common.getConnection();  // 오라클 DB 연결
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT PHONE FROM VM_LOGIN");
+            rs = stmt.executeQuery("SELECT PHONE FROM USERS");
             while(rs.next()){
                 String Phone = rs.getString("PHONE");
                 phoneList.add(Phone);
