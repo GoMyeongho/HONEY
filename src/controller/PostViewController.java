@@ -55,13 +55,13 @@ public class PostViewController {
 
         System.out.println("=".repeat(60));
         for(int i = page * 8; i < Math.min(page * 8 + 8,cList.size()); i++) {
-            String ans = (cList.get(i).getSubNo() == 1)
+            String ans = (i == 0 || cList.get(i).getCommNo() == cList.get(i-1).getCommNo())
                     ? "" : "->";
             System.out.print(ans);
             System.out.print(cList.get(i).getnName() + " | " + cList.get(i).getcDate() + "\n" + cList.get(i).getContent());
             System.out.println("-".repeat(60));
         }
-        System.out.println("[<] 댓글 이전 페이지  [" + page + 1 + "]  [>] 댓글 다음 페이지");
+        System.out.println("[<] 댓글 이전 페이지  [" + (page + 1) + "]  [>] 댓글 다음 페이지");
 
         System.out.print("[1] ");
         if (likes.isLike(likeSet, name)) System.out.print("좋아요 취소");
@@ -96,8 +96,7 @@ public class PostViewController {
                         mkComm.setnName(name);
                         mkComm.setUserId(id);
                         mkComm.setPostNo(postSel);
-                        mkComm.setCommNo(tempVO.getCommNo());
-                        comments.addComment(mkComm);
+                        comments.addComment(mkComm,tempVO.getCommNo());
                         return true;
                     case 9:
                         mkComm = getCommentsVO();
@@ -149,7 +148,7 @@ public class PostViewController {
 
             case ">":
                 if (page == maxPage) System.out.println("가장 마지막 페이지 입니다.");
-                page = (page > maxPage) ? maxPage : page + 1;
+                page = (page == maxPage) ? maxPage : page + 1;
                 return true;
 
             default:
@@ -240,11 +239,11 @@ public class PostViewController {
         while (content.getBytes().length < 600){
             temp = sc.nextLine();
             temp += "\n";
-            if (temp.equals("[완료]")) {
+            if (temp.equals("[완료]\n")) {
                 vo.setContent(content);
                 break;
             }
-            if (temp.equals("[취소]")) break;
+            if (temp.equals("[취소]\n")) break;
             if((temp + content).getBytes().length > 600) {
                 temp = "";
                 System.out.println("글자수 제한을 초과했습니다.");
@@ -259,7 +258,7 @@ public class PostViewController {
         int choice;
         System.out.println("댓글 목록을 불러옵니다.");
         for (CommentsVO vo : cList){
-            if (vo.getnName() == name) {
+            if (vo.getnName().equals(name)) {
                 System.out.println();
                 System.out.print("[" + commCnt++ + "]" + "|" + vo.getnName() + " | " + vo.getcDate() + "\n" + vo.getContent());
                 System.out.println("-".repeat(60));
@@ -287,7 +286,7 @@ public class PostViewController {
                                     updateVO.setSubNo(vo2.getSubNo());
                                     comments.updateComment(updateVO);
                                     System.out.println("수정이 완료 되었습니다.");
-                                    return true;
+                                    return false;
                             }
                         }
                     }
@@ -304,7 +303,7 @@ public class PostViewController {
         int choice;
         System.out.println("댓글 목록을 불러옵니다.");
         for (CommentsVO vo : cList){
-            if (vo.getnName() == name) {
+            if (vo.getnName().equals(name)) {
                 System.out.println();
                 System.out.print("[" + commCnt++ + "]" + "|" + vo.getnName() + " | " + vo.getcDate() + "\n" + vo.getContent());
                 System.out.println("-".repeat(60));
@@ -332,7 +331,7 @@ public class PostViewController {
                                 deleteVO.setSubNo(vo2.getSubNo());
                                 comments.deleteComment(deleteVO);
                                 System.out.println("수정이 완료 되었습니다.");
-                                return true;
+                                return false;
                             }
                         }
                     }

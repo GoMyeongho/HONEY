@@ -35,7 +35,6 @@ public class Common {
         try {
             if(stmt != null && !stmt.isClosed()) {
                 stmt.close();
-                System.out.println("Statement 해제 성공");
             }
         } catch (Exception e) {
             System.out.println(e + "해제 실패");
@@ -55,7 +54,7 @@ public class Common {
         try {
             if(conn != null && !conn.isClosed()) {
                 conn.commit();
-                System.out.println("커밋 완료");
+
             }
 
         } catch (Exception e) {
@@ -67,7 +66,7 @@ public class Common {
         try {
             if(conn != null && !conn.isClosed()) {
                 conn.rollback();
-                System.out.println("롤백 완료");
+
             }
         } catch (Exception e) {
             e.printStackTrace();

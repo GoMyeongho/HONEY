@@ -74,6 +74,25 @@ public class CommentsDAO {
         }
         return set;
     }
+    public boolean addComment (CommentsVO vo, int commNo) {
+        String sql = "INSERT INTO COMMENTS (COMMNO, SUBNO, POSTNO, USERID, CCONTENT, CDATE) VALUES(?, SEQ_SUBNO.NEXTVAL, ?, ?, ?, SYSDATE)";
+        try {
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, commNo);
+            psmt.setInt(2, vo.getPostNo());
+            psmt.setString(3, vo.getUserId());
+            psmt.setString(4, vo.getContent());
+            psmt.executeUpdate();   // SQL 쿼리 실행
+            return true;
+        } catch (Exception e) {
+            System.out.println(e + "글 작성에 실패 하였습니다.");
+            return false;
+        } finally { // psmt -> conn 순서로 데이터베이스 닫기
+            Common.close(psmt);
+            Common.close(conn);
+        }
+    }
 
     public boolean addComment (CommentsVO vo) {
             String sql = "INSERT INTO COMMENTS (COMMNO, SUBNO, POSTNO, USERID, CCONTENT, CDATE) VALUES(SEQ_COMMNO.NEXTVAL, SEQ_SUBNO.NEXTVAL, ?, ?, ?, SYSDATE)";
@@ -94,13 +113,11 @@ public class CommentsDAO {
             }
     }
     public boolean updateComment (CommentsVO vo) {
-        String sql = "UPDATE COMMENTS SET CCONTENT = ?,  WHERE POSTNO = ? AND COMMNO = ? AND SUBNO = ?";
+        String sql = "UPDATE COMMENTS SET CCONTENT = ? WHERE SUBNO = ?";
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
-            psmt.setInt(2, vo.getPostNo());
-            psmt.setInt(3, vo.getCommNo());
-            psmt.setInt(4, vo.getSubNo());
+            psmt.setInt(2, vo.getSubNo());
             psmt.setString(1, vo.getContent());
             psmt.executeUpdate();   // SQL 쿼리 실행
             return true;
@@ -113,13 +130,11 @@ public class CommentsDAO {
         }
     }
     public boolean deleteComment (CommentsVO vo) {
-        String sql = "DELETE FROM COMMENTS WHERE POSTNO = ? and COMMNO = ? and SUBNO = ?";
+        String sql = "UPDATE COMMENTS SET CCONTENT = '삭제된 댓글입니다.\n' WHERE SUBNO = ?";
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
-            psmt.setInt(1, vo.getPostNo());
-            psmt.setInt(2, vo.getCommNo());
-            psmt.setInt(3, vo.getSubNo());
+            psmt.setInt(1, vo.getSubNo());
             psmt.executeUpdate();   // SQL 쿼리 실행
             return true;
         } catch (Exception e) {

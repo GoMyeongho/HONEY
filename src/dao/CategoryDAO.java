@@ -15,7 +15,7 @@ public class CategoryDAO {  // 기존의 POST DAO 에서 카테고리 선택을 
 
     public List<String> getCategories() {
         List<String> categories = new ArrayList<>();    // 카테고리를 Array에 담는다
-        String sql = "SELECT CATE FROM CATEGORY";   // 카테고리 옵션 쿼리문
+        String sql = "SELECT CATE FROM CATEGORY WHERE CATE != 'DELETE'";   // 카테고리 옵션 쿼리문
 
         try {   // 기존에 데이터베이스에 존재하는 카테고리 정보를 가져오기 위한 연결
             conn = Common.getConnection();

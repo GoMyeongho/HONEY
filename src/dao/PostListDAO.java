@@ -26,7 +26,7 @@ public class PostListDAO {
     public List<PostsVO> selectPage(String value, int sel) {
         List<PostsVO> list = new ArrayList<PostsVO>();
 
-        String[] sql = {"SELECT * From VM_POSTS_PAGE WHERE NNAME LIKE ?",
+        String[] sql = {"SELECT * From VM_POSTS_PAGE WHERE NNAME LIKE ? ",
                 "SELECT * From VM_POSTS_PAGE WHERE NNAME = ?",
                 "SELECT * From VM_POSTS_PAGE WHERE TITLE LIKE ?",
                 "SELECT * From VM_POSTS_PAGE WHERE CATE = ?",
@@ -83,7 +83,7 @@ public class PostListDAO {
         return list;
     }
 
-    public final static String allSearch = "SELECT * FROM VM_POSTS_PAGE";
+    public final static String allSearch = "SELECT * FROM VM_POSTS_PAGE WHERE CATE != 'DELETE'";
 
 
 
