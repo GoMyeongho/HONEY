@@ -50,7 +50,7 @@ public class UsersDAO {
 
             } else {
                 System.out.println("아이디 생성 조건을 다시 확인 후 입력 해 주세요.");
-                return;
+                isRepeat = true;
             }
             for (String e : IDList) {
                 // if 중복된 아이디 확인
