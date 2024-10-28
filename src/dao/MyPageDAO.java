@@ -79,7 +79,7 @@ public class MyPageDAO {
         // 수정할 비밀번호 입력
         String userPW = "";
         while(true) {
-            System.out.print("변경할 비밀번호(8자 이상 16자 이하)(기존 비밀번호 유지는 no 입력) : ");
+            System.out.print("변경할 비밀번호(8자 이상 16자 이하의 영문 대소문자, 숫자, 특수문자를 포함)(기존 비밀번호 유지는 no 입력) : ");
             userPW = sc.next();
 
             Pattern passPattern1 = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[~!@#\\$%\\^&\\*]).{8,16}$");
