@@ -79,16 +79,16 @@ public class MyPageDAO {
         // 수정할 비밀번호 입력
         String userPW = "";
         while(true) {
-            System.out.print("변경할 비밀번호(8자 이상 20자 이하)(기존 비밀번호 유지는 no 입력) : ");
+            System.out.print("변경할 비밀번호(8자 이상 16자 이하)(기존 비밀번호 유지는 no 입력) : ");
             userPW = sc.next();
 
-            Pattern passPattern1 = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[~!@#\\$%\\^&\\*]).{8,20}$");
+            Pattern passPattern1 = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[~!@#\\$%\\^&\\*]).{8,16}$");
             // 정규식표현(비밀번호)
             // ^문자열 : 특정 문자열로 시작(시작점)
             // (?=.*[a-zA-Z]) : 영어 대문자 또는 소문자가 최소 한 번 포함되어야 함
             // (?=.*\\d) : 숫자가 최소 한 번 포함되어야 함
             // (?=.*\\W) : 특수 문자가 최소 한 번 포함되어야 함
-            // .{8,20} : 전체 길이가 8자 이상 20자 이하이어야 함
+            // .{8,16} : 전체 길이가 8자 이상 16자 이하이어야 함
             // 문자열$ : 특정 문자열로 끝남(종착점)
             Matcher passMatcher1 = passPattern1.matcher(userPW);
 
