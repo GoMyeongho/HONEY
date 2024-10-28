@@ -81,6 +81,7 @@ public class MyPageDAO {
         while(true) {
             System.out.print("변경할 비밀번호(8자 이상 16자 이하의 영문 대소문자, 숫자, 특수문자를 포함)(기존 비밀번호 유지는 no 입력) : ");
             userPW = sc.next();
+            sc.nextLine();
 
             Pattern passPattern1 = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[~!@#\\$%\\^&\\*]).{8,16}$");
             // 정규식표현(비밀번호)
@@ -105,6 +106,8 @@ public class MyPageDAO {
         while(true) {
             System.out.print("변경할 닉네임을 입력하세요 (기존 닉네임 유지는 no 입력) : ");
             nName = sc.next();
+            sc.nextLine();
+
             String check = nName;
 
             int intN = nName.getBytes().length;
@@ -136,6 +139,8 @@ public class MyPageDAO {
         while (true) {
             System.out.println("변경할 휴대폰번호를 입력하세요 (기존 휴대폰번호 유지는 no 입력) : ");
             phone = sc.next();
+            sc.nextLine();
+
             String check = phone;
 
             //중복 체크
@@ -153,7 +158,7 @@ public class MyPageDAO {
         String pwLOCK = "";
         while (true) {
             System.out.println("변경할 제시문를 입력하세요 (기존 제시문 유지는 no 입력) : ");
-            pwLOCK = sc.next();
+            pwLOCK = sc.nextLine();
 
             int intL = pwLOCK.getBytes().length;
 
@@ -171,6 +176,7 @@ public class MyPageDAO {
         while (true) {
             System.out.println("변경할 제시어를 입력하세요 (기존 제시어 유지는 no 입력) : ");
             pwKEY = sc.next();
+            sc.nextLine();
 
             if(pwKEY.equalsIgnoreCase("no")) {
                 pwKEY = cui.getPwKey();
@@ -200,7 +206,7 @@ public class MyPageDAO {
                 e.getStackTrace();
             }
         } else {
-        // 2. 비밀번호를 수정하는 경우
+            // 2. 비밀번호를 수정하는 경우
             sql = "UPDATE USERS SET USERPW = ?, NNAME=?, PHONE=?, PWLOCK=?, PWKey=? WHERE USERID = ?"; // 비밀번호를 포함하여 모든 사용자 정보를 업데이트하는 SQL쿼리
             try{
                 conn = Common.getConnection();
