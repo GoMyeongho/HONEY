@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 public class LikesDAO {
-    private final static String[] heart = {"♡", "♥"};
+    private final static String[] HEART = {"♡", "♥"};
     Connection conn = null;
     Statement stmt = null;
     PreparedStatement psmt = null;
@@ -72,10 +72,10 @@ public class LikesDAO {
     public String likeMark(HashSet<LikesVO> set, int POSTNO) {
         for (LikesVO vo : set) {
             if (vo.getPostNo() == POSTNO) {
-                return heart[1];
+                return HEART[1];
             }
         }
-        return heart[0];
+        return HEART[0];
     }
 
     public void cancelLike(int postNo, String userId) {
