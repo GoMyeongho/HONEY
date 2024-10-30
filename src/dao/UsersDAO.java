@@ -305,7 +305,6 @@ public class UsersDAO {
         while (true) {
             System.out.println("-가입한 아이디를 입력 해 주세요");
             System.out.print("아이디: ");
-            System.out.println();
             userID = noKor();
 
             if (userID.getBytes().length >= 8 && userID.getBytes().length <= 16) {
