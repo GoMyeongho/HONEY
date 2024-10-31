@@ -19,7 +19,7 @@ public class PostViewController {
     PostViewDAO dao = new PostViewDAO();
     LikesDAO likes = new LikesDAO();
     CommentsDAO comments = new CommentsDAO();
-    List<CommentsVO> cList = new ArrayList<CommentsVO>();
+    List<CommentsVO> cList = new ArrayList<>();
     HashSet<LikesVO> likeSet = new HashSet<>();
     PostsVO vo;
     static List<String> category = new CategoryDAO().getCategories();
@@ -67,9 +67,9 @@ public class PostViewController {
         if (likes.isLike(likeSet, name)) System.out.print("좋아요 취소");
         else System.out.print("좋아요 하기");
         if (vo.getAuthor().equals(name)) {
-            System.out.println("  [2] 댓글 쓰기  [3] 글 수정하기  [4] 댓글 수정하기  [5] 댓글 삭제하기  [삭제] 글 삭제하기  [0] 나가기");
+            System.out.println("  [2] 댓글 쓰기 [3] 글 수정하기 [4] 댓글 수정하기 [5] 댓글 삭제하기 [삭제] 글 삭제하기 [0] 나가기");
         }
-        else System.out.println("  [2] 댓글 쓰기            [4] 댓글 수정하기               [5] 댓글 삭제하기                [0] 나가기");
+        else System.out.println("  [2] 댓글 쓰기 [4] 댓글 수정하기 [5] 댓글 삭제하기 [0] 나가기");
     }
     public boolean selectOptions() {
         String sel = sc.next();
@@ -86,7 +86,7 @@ public class PostViewController {
                 CommentsVO mkComm;
                 switch (choice) {
                     case 1, 2, 3, 4, 5, 6, 7, 8:
-                        if(cList.size() < page * 8 + choice - 1){
+                        if(cList.size() < page * 8 + choice){
                             System.out.println("해당하는 댓글이 없습니다");
                             return true;
                         }
@@ -258,7 +258,7 @@ public class PostViewController {
         int choice;
         System.out.println("댓글 목록을 불러옵니다.");
         for (CommentsVO vo : cList){
-            if (vo.getnName().equals(NAME)) {
+            if (vo!=null && vo.getnName()!=null && vo.getnName().equals(NAME)) {
                 System.out.println();
                 System.out.print("[" + commCnt++ + "]" + "|" + vo.getnName() + " | " + vo.getcDate() + "\n" + vo.getContent());
                 System.out.println("-".repeat(60));

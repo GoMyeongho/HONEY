@@ -83,7 +83,7 @@ public class MyPageDAO {
             userPW = sc.next();
             sc.nextLine();
 
-            Pattern passPattern1 = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[~!@#\\$%\\^&\\*]).{8,16}$");
+            Pattern passPattern1 = Pattern.compile("^[a-zA-Z0-9~!@#$%^&*]{8,16}$");
             // 정규식표현(비밀번호)
             // ^문자열 : 특정 문자열로 시작(시작점)
             // (?=.*[a-zA-Z]) : 영어 대문자 또는 소문자가 최소 한 번 포함되어야 함

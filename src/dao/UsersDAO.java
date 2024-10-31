@@ -217,7 +217,6 @@ public class UsersDAO {
             psmt.setString(5, pwLOCK);
             psmt.setString(6, pwKey);
             int ret = psmt.executeUpdate();
-            System.out.println("Return: " + ret);
 
         } catch (SQLException e) {
             System.out.println(e + "회원가입에 실패하였습니다.");

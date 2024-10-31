@@ -130,7 +130,7 @@ public class CommentsDAO {
         }
     }
     public boolean deleteComment (CommentsVO vo) {
-        String sql = "UPDATE COMMENTS SET CCONTENT = '삭제된 댓글입니다.\n' WHERE SUBNO = ?";
+        String sql = "UPDATE COMMENTS SET CCONTENT = '삭제된 댓글입니다.\n' , USERID = 'unknown' WHERE SUBNO = ?";
         try {
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
